@@ -1,0 +1,128 @@
+<div *ngIf="error" class="alert alert-danger alert-dismissible fade show" role="alert">
+  <strong>Error! </strong> {{ errorMessage }}
+  <button type="button" (click)="vanishError()" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+
+<div class="horse-add">
+  <h3>Enter data to add a new horse.</h3>
+  <hr>
+  <!--<mat-form-field id="name-field" class="field">
+    <mat-label>Enter name</mat-label>
+    <input matInput type="text" [(ngModel)]="this.horse.name" placeholder=" Here Enter name">
+    <button mat-button *ngIf="this.horse.name" matSuffix mat-icon-button aria-label="Clear">
+      <mat-icon (click)="this.resetName()">close</mat-icon>
+    </button>
+  </mat-form-field>
+  <br><br>-->
+  <div *ngIf="horse">
+    <label for='name'>NAME: </label>
+    <input required id='name' [(ngModel)]="this.horse.name" placeholder="name">
+    <br>
+
+    <label for='sex'>SEX: </label>
+    <select required id='sex' [(ngModel)]="this.horse.sex">
+      <option  class="dropdown-item" (click)="setSex('M')"> M </option>
+      <option class="dropdown-item" (click)="setSex('W')"> W </option>
+    </select>
+    <br>
+
+
+  <!--<mat-form-field id="sex-field" class="field">
+    <mat-label>Select a sex</mat-label>
+    <mat-select matInput type="text" [(ngModel)]="this.horse.sex">
+      <mat-option value="W">female</mat-option>
+      <mat-option value="M">male</mat-option>
+      &lt;!&ndash;        <mat-icon (click)="this.data.horseAddComponent.reset()">close</mat-icon>&ndash;&gt;
+    </mat-select>
+  </mat-form-field>
+  <br><br>-->
+
+  <div id="date-field" class="field">
+    <label>Enter the date of birth</label>
+    <input required [matDatepicker]="picker" type="text" [(ngModel)]="this.horse.dateOfBirth">
+    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+    <mat-datepicker #picker></mat-datepicker>
+  </div>
+  <br>
+    <label for='description'>DESCRIPTION: </label>
+    <input id='description' [(ngModel)]="this.horse.description" placeholder="description">
+    <br>
+    <label for='favSport'> FAVOURITE SPORT: </label>
+    <input id='favSport' [(ngModel)]="this.horse.favSport" placeholder="favSport">
+    <br><br>
+
+  </div>
+
+  <!--<mat-form-field id="description-field" class="field">
+    <mat-label>Enter description</mat-label>
+    <input matInput type="text" [(ngModel)]="this.horse.description">
+    <button mat-button *ngIf="this.horse.description" matSuffix mat-icon-button aria-label="Clear">
+      <mat-icon (click)="this.resetDescription()">close</mat-icon>
+    </button>
+  </mat-form-field>
+  <br><br>
+
+  <mat-form-field class="field">
+    <mat-label>Enter favourite sport</mat-label>
+    <input matInput type="text" [(ngModel)]="this.horse.favSport">
+    <button mat-button *ngIf="this.horse.favSport" matSuffix mat-icon-button
+            aria-label="Clear">
+      <mat-icon (click)="this.resetFavSport()">close</mat-icon>
+    </button>
+  </mat-form-field>-->
+  <br><br>
+
+  <div class="buttons">
+    <button mat-stroked-button class="button" color="primary" (click)="this.createHorse()">
+      Add new horse
+    </button>
+    <button mat-stroked-button class="button" color="primary">
+      <a routerLink="/horses">
+        DISCARD
+      </a></button>
+  </div>
+  <br><br>
+</div>
+<!--
+<button class="back" (click)="goBack()"> BACK </button>
+<br><br>
+<div *ngIf="horse">
+  <label for='name'>NAME: </label>
+  <input id='name' [(ngModel)]="this.horse.name" placeholder="name">
+  <br>
+  <label for='sex'>SEX: </label>
+  <select id='sex' [(ngModel)]="this.horse.sex">
+    <option  class="dropdown-item" (click)="setSex('M')"> M </option>
+    <option class="dropdown-item" (click)="setSex('W')"> W </option>
+  </select>
+  <br>
+  <mat-form-field class="field">
+    <mat-label>Enter the date of birth</mat-label>
+    <input matInput [matDatepicker]="picker" [(ngModel)]="this.horse.dateOfBirth">
+    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+    <mat-datepicker #picker></mat-datepicker>
+  </mat-form-field>
+
+  <br>
+  <label for='dateOfBirth'>DATE OF BIRTH: </label>
+  <input id='dateOfBirth' [(ngModel)]="this.horse.dateOfBirth" placeholder="yyyy-mm-dd">
+  <br>
+  <label for='description'>DESCRIPTION: </label>
+  <input id='description' [(ngModel)]="this.horse.description" placeholder="description">
+  <br>
+  <label for='favSport'> FAVOURITE SPORT: </label>
+  <input id='favSport' [(ngModel)]="this.horse.favSport" placeholder="favSport">
+  <br><br>
+</div>
+
+  <button class="add-btn" (click)="createHorse()"> ADD </button>
+  <br><br>
+  <button class="discard-btn">
+    <a routerLink="/horses">
+      DISCARD
+    </a>
+  </button>
+-->
+

@@ -1,0 +1,66 @@
+<!--horse-->
+<div *ngIf="this.data.type == 'horse-add'">
+  <div class="horse-add">
+    <h3>Enter data to add a new horse.</h3>
+    <hr>
+    <mat-form-field id="name-field" class="field">
+      <mat-label>Enter name</mat-label>
+      <input matInput type="text" [(ngModel)]="this.data.horseAddComponent.horse.name">
+      <button mat-button *ngIf="this.data.horseAddComponent.horse.name" matSuffix mat-icon-button aria-label="Clear"
+              (click)="this.data.horseAddComponent.horse.name">
+        <mat-icon (click)="this.data.horseAddComponent.resetName()">close</mat-icon>
+      </button>
+    </mat-form-field>
+    <br><br>
+
+    <mat-form-field id="sex-field" class="field">
+      <mat-label>Select a sex</mat-label>
+      <mat-select matInput type="text" [(ngModel)]="this.data.horseAddComponent.horse.sex">
+        <mat-option value="W">female</mat-option>
+        <mat-option value="M">male</mat-option>
+        <!--        <mat-icon (click)="this.data.horseAddComponent.reset()">close</mat-icon>-->
+      </mat-select>
+    </mat-form-field>
+    <br><br>
+
+    <mat-form-field id="date-field" class="field">
+      <mat-label>Enter the date of birth</mat-label>
+      <input matInput [matDatepicker]="picker" [(ngModel)]="this.data.horseAddComponent.horse.dateOfBirth">
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+    <br><br>
+
+    <mat-form-field id="description-field" class="field">
+      <mat-label>Enter description</mat-label>
+      <input matInput type="text" [(ngModel)]="this.data.horseAddComponent.horse.description">
+      <button mat-button *ngIf="this.data.horseAddComponent.horse.description" matSuffix mat-icon-button
+              aria-label="Clear">
+        <mat-icon (click)="this.data.horseAddComponent.resetDescription()">close</mat-icon>
+      </button>
+    </mat-form-field>
+    <br><br>
+
+    <mat-form-field class="field">
+      <mat-label>Enter favourite sport</mat-label>
+      <input matInput type="text" [(ngModel)]="this.data.horseAddComponent.horse.favSport">
+      <button mat-button *ngIf="this.data.horseAddComponent.horse.favSport" matSuffix mat-icon-button
+              aria-label="Clear">
+        <mat-icon (click)="this.data.horseAddComponent.resetFavSport()">close</mat-icon>
+      </button>
+    </mat-form-field>
+    <br><br>
+
+    <div class="buttons">
+      <button mat-stroked-button class="button" color="primary" (click)="this.data.horseAddComponent.createHorse()">Add
+        new
+        horse
+      </button>
+      <button mat-stroked-button class="button" color="primary">
+        <a routerLink="/horses">
+          DISCARD
+        </a></button>
+    </div>
+    <br><br>
+  </div>
+</div>
