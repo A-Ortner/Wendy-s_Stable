@@ -1,11 +1,10 @@
-import {Component, Inject, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import { Horse } from '../../dto/horse';
 import {HorseService} from '../../service/horse.service';
 import {Location} from '@angular/common';
-import {MatDatepickerModule} from '@angular/material/datepicker';
-import {MAT_DIALOG_DATA, MatDialog, MatDialogConfig, MatDialogRef} from '@angular/material/dialog';
-import {DialogComponent} from '../dialog/dialog.component';
-//import {DialogComponent} from "../dialog/dialog.component";
+import {NgbDateStruct} from '@ng-bootstrap/ng-bootstrap';
+import {Sport} from '../../dto/sport';
+import {SportService} from '../../service/sport.service';
 
 @Component({
   selector: 'app-horse-add',
@@ -17,17 +16,19 @@ export class HorseAddComponent implements OnInit {
   error = false;
   errorMessage = '';
   horse: Horse;
+  model: NgbDateStruct;
+  sports: Sport[];
 
   constructor(private horseService: HorseService,
               private location: Location,
-              /*private dialogRef: MatDialogRef<HorseAddComponent>,
-              @Inject(MAT_DIALOG_DATA) data*/) {
+              private sportService: SportService,) {
 
-    //this.horse=data.horse;
   }
 
   ngOnInit(): void {
     this.horse = new Horse();
+    // @ts-ignore
+    this.sports = this.getAllSports();
   }
 
   /**
@@ -55,7 +56,7 @@ export class HorseAddComponent implements OnInit {
   createHorse() {
     console.log('Horse:');
     console.log(this.horse);
-    /*this.horse.description = '';
+    this.horse.description = '';
     this.horse.favSport = -1; //default values
     this.horseService.createHorse(this.horse).subscribe(
       (horse: Horse) => {
@@ -65,31 +66,10 @@ export class HorseAddComponent implements OnInit {
         //todo: show success message
       },
       error => {
-        //todo: add specific error message for user (in defaultServiceErrorHandlingMetod)
+        //todo: add specific error message for user (in defaultServiceErrorHandlingMethod)
         this.defaultServiceErrorHandling(error);
       }
-    );*/
-  }
-
-  private defaultServiceErrorHandling(error: any) {
-    console.log(error);
-    this.error = true;
-    if (error.status === 0) {
-      // If status is 0, the backend is probably down
-      this.errorMessage = 'The backend seems not to be reachable';
-    } else if (error.error.message === 'No message available') {
-      // If no detailed error message is provided, fall back to the simple error name
-      this.errorMessage = error.error.error;
-    } else {
-      this.errorMessage = error.error.message;
-    }
-  }
-
-  /**
-   * @private Resets the HorseObject so old values do not remain in the form
-   */
-  private resetHorse() {
-    this.horse = new Horse();
+    );
   }
 
   /**
@@ -108,5 +88,37 @@ export class HorseAddComponent implements OnInit {
 
   resetFavSport() {
     this.horse.favSport=null;
+  }
+
+  private getAllSports() {
+    this.sportService.getAllSports().subscribe(
+      (sports: Sport[]) => {
+        this.sports = sports;
+      },
+      error => {
+        this.defaultServiceErrorHandling(error);
+      }
+    );
+  }
+
+  /**
+   * @private Resets the HorseObject so old values do not remain in the form
+   */
+  private resetHorse() {
+    this.horse = new Horse();
+  }
+
+  private defaultServiceErrorHandling(error: any) {
+    console.log(error);
+    this.error = true;
+    if (error.status === 0) {
+      // If status is 0, the backend is probably down
+      this.errorMessage = 'The backend seems not to be reachable';
+    } else if (error.error.message === 'No message available') {
+      // If no detailed error message is provided, fall back to the simple error name
+      this.errorMessage = error.error.error;
+    } else {
+      this.errorMessage = error.error.message;
+    }
   }
 }

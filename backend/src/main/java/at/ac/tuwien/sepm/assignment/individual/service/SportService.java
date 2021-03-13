@@ -2,6 +2,9 @@ package at.ac.tuwien.sepm.assignment.individual.service;
 
 import at.ac.tuwien.sepm.assignment.individual.entity.Sport;
 import at.ac.tuwien.sepm.assignment.individual.exception.NotFoundException;
+import at.ac.tuwien.sepm.assignment.individual.exception.ServiceException;
+
+import java.util.List;
 
 public interface SportService {
 
@@ -16,4 +19,9 @@ public interface SportService {
      */
     Sport getOneById(Long id);
 
+    /**
+     * @return all horses in the database
+     * @throws ServiceException if something goes wrong during during data processing.
+     */
+    List<Sport> getAllSports() throws ServiceException;
 }

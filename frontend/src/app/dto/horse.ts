@@ -5,9 +5,5 @@ export class Horse {
   dateOfBirth: Date;
   description: string;
   favSport: number;
-
-  setSex(s: string){
-    this.sex = s;
-}
 }
 

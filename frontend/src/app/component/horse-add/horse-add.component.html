@@ -4,125 +4,88 @@
     <span aria-hidden="true">&times;</span>
   </button>
 </div>
+<br>
+<form>
+  <div class="form-group">
+    <label for="horseName">
+      Name:
+    </label>
+    <input
+      id="horseName"
+      name="name"
+      type="text"
+      class="form-control"
+      placeholder="Enter name..."
+      [(ngModel)]="horse.name">
+  </div>
 
-<div class="horse-add">
-  <h3>Enter data to add a new horse.</h3>
-  <hr>
-  <!--<mat-form-field id="name-field" class="field">
-    <mat-label>Enter name</mat-label>
-    <input matInput type="text" [(ngModel)]="this.horse.name" placeholder=" Here Enter name">
-    <button mat-button *ngIf="this.horse.name" matSuffix mat-icon-button aria-label="Clear">
-      <mat-icon (click)="this.resetName()">close</mat-icon>
-    </button>
-  </mat-form-field>
-  <br><br>-->
-  <div *ngIf="horse">
-    <label for='name'>NAME: </label>
-    <input required id='name' [(ngModel)]="this.horse.name" placeholder="name">
-    <br>
-
-    <label for='sex'>SEX: </label>
-    <select required id='sex' [(ngModel)]="this.horse.sex">
-      <option  class="dropdown-item" (click)="setSex('M')"> M </option>
-      <option class="dropdown-item" (click)="setSex('W')"> W </option>
+  <div class="form-group">
+    <label for="horseSex">
+      Sex:
+    </label>
+    <select
+      id="horseSex"
+      name="sex"
+      class="browser-default custom-select form-control"
+      [(ngModel)]="horse.sex">
+      <option selected hidden>Choose sex...</option>
+      <option value="M">male</option>
+      <option value="W">female</option>
     </select>
-    <br>
-
-
-  <!--<mat-form-field id="sex-field" class="field">
-    <mat-label>Select a sex</mat-label>
-    <mat-select matInput type="text" [(ngModel)]="this.horse.sex">
-      <mat-option value="W">female</mat-option>
-      <mat-option value="M">male</mat-option>
-      &lt;!&ndash;        <mat-icon (click)="this.data.horseAddComponent.reset()">close</mat-icon>&ndash;&gt;
-    </mat-select>
-  </mat-form-field>
-  <br><br>-->
-
-  <div id="date-field" class="field">
-    <label>Enter the date of birth</label>
-    <input required [matDatepicker]="picker" type="text" [(ngModel)]="this.horse.dateOfBirth">
-    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-    <mat-datepicker #picker></mat-datepicker>
-  </div>
-  <br>
-    <label for='description'>DESCRIPTION: </label>
-    <input id='description' [(ngModel)]="this.horse.description" placeholder="description">
-    <br>
-    <label for='favSport'> FAVOURITE SPORT: </label>
-    <input id='favSport' [(ngModel)]="this.horse.favSport" placeholder="favSport">
-    <br><br>
-
   </div>
 
-  <!--<mat-form-field id="description-field" class="field">
-    <mat-label>Enter description</mat-label>
-    <input matInput type="text" [(ngModel)]="this.horse.description">
-    <button mat-button *ngIf="this.horse.description" matSuffix mat-icon-button aria-label="Clear">
-      <mat-icon (click)="this.resetDescription()">close</mat-icon>
-    </button>
-  </mat-form-field>
-  <br><br>
+  <div class="form-group">
+    <label>Date of birth:</label>
+    <form class="form-inline">
+      <div class="input-group">
+        <input
+          class="form-control"
+          placeholder="yyyy-mm-dd"
+          name="dp"
+          [(ngModel)]="horse.dateOfBirth"
+          ngbDatepicker #d="ngbDatepicker">
+        <div class="input-group-append">
+          <button class="btn btn-outline-secondary calendar" (click)="d.toggle()" type="button"></button>
+        </div>
+      </div>
 
-  <mat-form-field class="field">
-    <mat-label>Enter favourite sport</mat-label>
-    <input matInput type="text" [(ngModel)]="this.horse.favSport">
-    <button mat-button *ngIf="this.horse.favSport" matSuffix mat-icon-button
-            aria-label="Clear">
-      <mat-icon (click)="this.resetFavSport()">close</mat-icon>
-    </button>
-  </mat-form-field>-->
-  <br><br>
-
-  <div class="buttons">
-    <button mat-stroked-button class="button" color="primary" (click)="this.createHorse()">
-      Add new horse
-    </button>
-    <button mat-stroked-button class="button" color="primary">
-      <a routerLink="/horses">
-        DISCARD
-      </a></button>
+    </form>
   </div>
-  <br><br>
-</div>
-<!--
-<button class="back" (click)="goBack()"> BACK </button>
-<br><br>
-<div *ngIf="horse">
-  <label for='name'>NAME: </label>
-  <input id='name' [(ngModel)]="this.horse.name" placeholder="name">
-  <br>
-  <label for='sex'>SEX: </label>
-  <select id='sex' [(ngModel)]="this.horse.sex">
-    <option  class="dropdown-item" (click)="setSex('M')"> M </option>
-    <option class="dropdown-item" (click)="setSex('W')"> W </option>
-  </select>
-  <br>
-  <mat-form-field class="field">
-    <mat-label>Enter the date of birth</mat-label>
-    <input matInput [matDatepicker]="picker" [(ngModel)]="this.horse.dateOfBirth">
-    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-    <mat-datepicker #picker></mat-datepicker>
-  </mat-form-field>
 
-  <br>
-  <label for='dateOfBirth'>DATE OF BIRTH: </label>
-  <input id='dateOfBirth' [(ngModel)]="this.horse.dateOfBirth" placeholder="yyyy-mm-dd">
-  <br>
-  <label for='description'>DESCRIPTION: </label>
-  <input id='description' [(ngModel)]="this.horse.description" placeholder="description">
-  <br>
-  <label for='favSport'> FAVOURITE SPORT: </label>
-  <input id='favSport' [(ngModel)]="this.horse.favSport" placeholder="favSport">
-  <br><br>
-</div>
+  <div class="form-group">
+    <label for="horseDescription">
+      Description:
+    </label>
+    <textarea
+      id="horseDescription"
+      name="description"
+      cols="30" rows="10"
+      class="form-control"
+      placeholder="Enter description..."
+      [(ngModel)]="horse.description"></textarea>
+  </div>
 
-  <button class="add-btn" (click)="createHorse()"> ADD </button>
+  <div class="form-group">
+    <label for="horseSport">
+      Favourite Sport:
+    </label>
+    <select
+      id="horseSport"
+      name="datepicker"
+      class="browser-default custom-select form-control"
+      [(ngModel)]="horse.favSport">
+      <option selected hidden>Choose sport from list...</option>
+      <option *ngFor="let sport of sports">{{sport.name}}</option>
+    </select>
+  </div>
+
+  <button class="btn btn-primary" (click)="createHorse()"> ADD </button>
   <br><br>
-  <button class="discard-btn">
+  <button class="btn btn-outline-dark">
     <a routerLink="/horses">
       DISCARD
     </a>
   </button>
--->
+</form>
+
 

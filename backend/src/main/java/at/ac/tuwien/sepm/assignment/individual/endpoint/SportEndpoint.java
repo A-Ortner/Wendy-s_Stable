@@ -1,10 +1,18 @@
 package at.ac.tuwien.sepm.assignment.individual.endpoint;
 
+import at.ac.tuwien.sepm.assignment.individual.endpoint.dto.HorseDto;
 import at.ac.tuwien.sepm.assignment.individual.endpoint.dto.SportDto;
 import at.ac.tuwien.sepm.assignment.individual.endpoint.mapper.SportMapper;
+import at.ac.tuwien.sepm.assignment.individual.entity.Horse;
+import at.ac.tuwien.sepm.assignment.individual.entity.Sport;
 import at.ac.tuwien.sepm.assignment.individual.exception.NotFoundException;
+import at.ac.tuwien.sepm.assignment.individual.exception.ServiceException;
 import at.ac.tuwien.sepm.assignment.individual.service.SportService;
+
 import java.lang.invoke.MethodHandles;
+import java.util.LinkedList;
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +42,21 @@ public class SportEndpoint {
             return sportMapper.entityToDto(sportService.getOneById(id));
         } catch (NotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Error during reading sport", e);
+        }
+    }
+
+    @GetMapping
+    public List<SportDto> getAllSports() {
+        LOGGER.info("GET all sports " + BASE_URL);
+        try {
+            List<SportDto> sportDtos = new LinkedList<>();
+            List<Sport> sports = sportService.getAllSports();
+            for (Sport o : sports) {
+                sportDtos.add(sportMapper.entityToDto(o));
+            }
+            return sportDtos;
+        } catch (ServiceException e) {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), e);
         }
     }
 }
