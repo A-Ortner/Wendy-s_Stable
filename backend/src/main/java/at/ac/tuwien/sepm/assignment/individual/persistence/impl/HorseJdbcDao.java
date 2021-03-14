@@ -13,10 +13,11 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import java.lang.invoke.MethodHandles;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.util.LinkedList;
+import java.util.List;
 
 @Repository
 public class HorseJdbcDao implements HorseDao {
@@ -39,7 +40,7 @@ public class HorseJdbcDao implements HorseDao {
         if(resultSet.getString("sex").equals("M")) horse.setSex(Sexes.M);
         else horse.setSex(Sexes.W);
 
-        horse.setDateOfBirth(resultSet.getDate("dateofbirth").toLocalDate());
+        horse.setDateOfBirth((resultSet.getDate("dateofbirth").toLocalDate()));
         horse.setDescription(resultSet.getString("description"));
         horse.setFavSportID(resultSet.getLong("favsportid"));
         return horse;
@@ -47,7 +48,7 @@ public class HorseJdbcDao implements HorseDao {
 
     @Override
     public Horse createHorse(Horse horse) throws PersistenceException {
-        LOGGER.info("createHorse({})", horse.toString()); //todo: make .trace
+        LOGGER.trace("createHorse({})", horse.toString());
         final String sql = "INSERT INTO " + TABLE_NAME + " (name, sex, dateofbirth, description, favsportid)" + " VALUES (?,?,?,?,?);";
         KeyHolder keyHolder = new GeneratedKeyHolder();
         try {
@@ -55,8 +56,8 @@ public class HorseJdbcDao implements HorseDao {
                 PreparedStatement stmt = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
                 stmt.setString(1, horse.getName());
                 stmt.setString(2, horse.getSex().name());
-                stmt.setString(3, horse.getDescription());
-                stmt.setObject(4, horse.getDateOfBirth());
+                stmt.setDate(3, java.sql.Date.valueOf(horse.getDateOfBirth()));
+                stmt.setString(4, horse.getDescription());
                 stmt.setLong(5, horse.getFavSportID());
                 return stmt;
             }, keyHolder);
@@ -67,5 +68,19 @@ public class HorseJdbcDao implements HorseDao {
         horse.setId(((Number) keyHolder.getKeys().get("id")).longValue());
         LOGGER.info("Saved horse {}", horse.toString());
         return horse;
+    }
+
+    @Override
+    public List<Horse> getAllHorses() {
+        LOGGER.trace("getAllHorses()");
+        final String sql = "SELECT * FROM " + TABLE_NAME + ";";
+        List<Horse> horses = new LinkedList<>();
+        try {
+            horses = jdbcTemplate.query(sql, this::mapRow);
+        } catch (Exception e) {
+            LOGGER.error(e.getMessage());
+            throw new PersistenceException("Error during running the query in database: " + e.getMessage());
+        }
+        return horses;
     }
 }

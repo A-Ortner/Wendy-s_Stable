@@ -9,7 +9,7 @@ CREATE TABLE IF NOT EXISTS horse
     id          BIGINT AUTO_INCREMENT PRIMARY KEY,
     name        VARCHAR(255) NOT NULL,
     sex         CHAR NOT NULL,
-    dateofbirth OBJECT    NOT NULL,
+    dateofbirth DATE    NOT NULL,
     description VARCHAR(2000),
     favsportid  BIGINT,
 

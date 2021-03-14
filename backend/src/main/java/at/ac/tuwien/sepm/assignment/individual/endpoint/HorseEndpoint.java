@@ -14,7 +14,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.lang.invoke.MethodHandles;
-import java.security.Provider;
+import java.util.LinkedList;
+import java.util.List;
 
 @RestController
 @RequestMapping(HorseEndpoint.BASE_URL)
@@ -46,7 +47,21 @@ public class HorseEndpoint {
             //500: internal server error
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), e);
         }
+    }
 
+    @GetMapping()
+    public List<HorseDto> getAllHorses(){
+        LOGGER.info("GET all horses " + BASE_URL);
+        try {
+            List<HorseDto> horseDtos = new LinkedList<>();
+            List<Horse> horses = horseService.getAllHorses();
+            for (Horse o : horses) {
+                horseDtos.add(horseMapper.entityToDto(o));
+            }
+            return horseDtos;
+        } catch (ServiceException e) {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), e);
+        }
     }
 
 

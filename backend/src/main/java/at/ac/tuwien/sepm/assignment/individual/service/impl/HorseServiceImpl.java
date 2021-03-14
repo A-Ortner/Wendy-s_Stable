@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.lang.invoke.MethodHandles;
+import java.util.List;
 
 @Service
 public class HorseServiceImpl implements HorseService {
@@ -37,6 +38,16 @@ public class HorseServiceImpl implements HorseService {
             return horseDao.createHorse(horse);
         } catch (PersistenceException e) {
             throw new ServiceException(e.getMessage(), e.getCause());
+        }
+    }
+
+    @Override
+    public List<Horse> getAllHorses() throws ServiceException {
+        LOGGER.info("getAllHorses()"); //todo: trace
+        try {
+            return horseDao.getAllHorses();
+        }catch (PersistenceException e){
+            throw new ServiceException(e.getMessage(),e);
         }
     }
 

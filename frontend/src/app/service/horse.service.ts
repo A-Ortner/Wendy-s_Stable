@@ -20,10 +20,18 @@ export class HorseService {
    * @param horse: horse to be added
    */
   createHorse(horse: Horse) {
-    console.log('Create new sport', horse);
+    console.log('Create new horse', horse);
     return this.httpClient.post<Horse>(
       baseUri,
       horse
     );
+  }
+
+  /**
+   * Fetches all horses from the backend.
+   */
+  getAllHorses(): Observable<Horse[]> {
+    console.log('Load all horses ' + baseUri);
+    return this.httpClient.get<Horse[]>(baseUri);
   }
 }
