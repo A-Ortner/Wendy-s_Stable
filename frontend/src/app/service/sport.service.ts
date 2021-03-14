@@ -27,7 +27,7 @@ export class SportService {
    * Fetches all sports from the backend.
    */
   getAllSports(): Observable<Sport[]> {
-    console.log('Load all sports');
+    console.log('Load all sports ' + baseUri);
     return this.httpClient.get<Sport[]>(baseUri);
   }
 

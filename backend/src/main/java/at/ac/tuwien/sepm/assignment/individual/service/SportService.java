@@ -20,7 +20,7 @@ public interface SportService {
     Sport getOneById(Long id);
 
     /**
-     * @return all horses in the database
+     * @return all sports in the database
      * @throws ServiceException if something goes wrong during during data processing.
      */
     List<Sport> getAllSports() throws ServiceException;
