@@ -34,4 +34,13 @@ public interface HorseService {
      * @throws NotFoundException if the sport could not be found in the system.
      */
     Horse getOneById(Long id);
+
+    /**
+     * @param horse which is to be updated in the database
+     * @return updated Horse
+     * @throws ServiceException will be thrown if something goes wrong during the data processing
+     * @throws NotFoundException will be thrown if the horse could not be found in the database
+     * @throws ValidationException will be thrown if input fields are invalid during data processing
+     * */
+    Horse updateHorse(Horse horse) throws ServiceException, NotFoundException, ValidationException;
 }

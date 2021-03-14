@@ -1,0 +1,105 @@
+<div *ngIf="error" class="alert alert-danger alert-dismissible fade show" role="alert">
+  <strong>Error! </strong> {{ errorMessage }}
+  <button type="button" (click)="vanishError()" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<br>
+<button class="btn btn-secondary" (click)="goBack()"> BACK </button>
+<br><br>
+
+<form>
+  <div class="form-group">
+    <label for="horseName">
+      Name:
+    </label>
+    <input
+      required
+      id="horseName"
+      ngModel
+      name="name"
+      #name = "ngModel"
+      type="text"
+      class="form-control"
+      [defaultValue]="this.horse.name"
+      [(ngModel)]="horse.name">
+  </div>
+  <div class="alert alert-danger" *ngIf="name.touched && !name.valid">Name must be set.</div>
+
+  <div class="form-group">
+    <label for="horseSex">
+      Sex:
+    </label>
+    <select
+      required
+      id="horseSex"
+      ngModel
+      name="sex"
+      #sex="ngModel"
+      class="browser-default custom-select form-control"
+      [(ngModel)]="horse.sex">
+      <option selected hidden>{{this.horse.sex}}</option>
+      <option value="M">male</option>
+      <option value="W">female</option>
+    </select>
+  </div>
+  <div class="alert alert-danger" *ngIf="sex.touched && !sex.valid">Sex must be set.</div>
+
+  <div class="form-group">
+    <label>Date of birth:</label>
+    <form class="form-inline">
+      <div class="input-group">
+        <input
+          required
+          type="date"
+          class="form-control"
+          id="dateOfBirth"
+          [(ngModel)]="this.horse.dateOfBirth"
+          ngModel name="dp"
+          onkeydown="return false"
+          #dp = "ngModel"
+          [defaultValue]="this.horse.dateOfBirth">
+      </div>
+      <div class="alert alert-danger" *ngIf="dp.touched && !dateValid()">{{dateError}}</div>
+
+    </form>
+  </div>
+
+  <div class="form-group">
+    <label for="horseDescription">
+      Description:
+    </label>
+    <textarea
+      id="horseDescription"
+      name="description"
+      cols="30" rows="3"
+      class="form-control"
+      [defaultValue]="this.horse.description"
+      [(ngModel)]="horse.description"></textarea>
+  </div>
+
+  <div class="form-group">
+    <label for="horseSport">
+      Favourite Sport:
+    </label>
+    <select
+      id="horseSport"
+      name="datepicker"
+      class="browser-default custom-select form-control"
+      [(ngModel)]="horse.favSport">
+      <option selected hidden>{{this.horse.favSport}}</option>
+      <option *ngFor="let sport of sports">{{sport.name}}</option>
+    </select>
+  </div>
+
+  <button class="btn btn-primary" (click)="updateHorse()"> UPDATE </button>
+  <br><br>
+  <button class="btn btn-outline-dark">
+    <a routerLink="/horses">
+      DISCARD
+    </a>
+  </button>
+</form>
+
+
+

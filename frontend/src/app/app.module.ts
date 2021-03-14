@@ -23,6 +23,7 @@ import {MatIconModule} from '@angular/material/icon';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { HorseDetailsComponent } from './component/horse-details/horse-details.component';
+import { HorseEditComponent } from './component/horse-edit/horse-edit.component';
 
 @NgModule({
   declarations: [
@@ -33,6 +34,7 @@ import { HorseDetailsComponent } from './component/horse-details/horse-details.c
     HorseAddComponent,
     DialogComponent,
     HorseDetailsComponent,
+    HorseEditComponent,
   ],
   imports: [
     BrowserModule,

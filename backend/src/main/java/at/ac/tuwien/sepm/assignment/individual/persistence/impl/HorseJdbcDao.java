@@ -15,6 +15,7 @@ import org.springframework.stereotype.Repository;
 
 import java.lang.invoke.MethodHandles;
 import java.sql.*;
+import java.time.LocalDateTime;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -92,5 +93,29 @@ public class HorseJdbcDao implements HorseDao {
         if (horses.isEmpty()) throw new NotFoundException("Could not find sport with id " + id);
 
         return horses.get(0);
+    }
+
+    @Override
+    public Horse updateHorse(Horse horse) throws PersistenceException {
+        LOGGER.info("Update horse with id {}", horse.getId()); //todo: make trace
+
+
+        final String sql = "UPDATE " + TABLE_NAME + " SET" + " id=?, name= ?, sex= ?, dateofbirth= ?, description= ?, favsportid= ?" + "WHERE id=" + horse.getId().intValue() + ";";
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+        try {
+            jdbcTemplate.update(connection -> {
+                PreparedStatement stmt = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+                stmt.setInt(1, horse.getId().intValue());
+                stmt.setString(2, horse.getName());
+                stmt.setString(3, horse.getSex().name());
+                stmt.setDate(4, java.sql.Date.valueOf(horse.getDateOfBirth()));
+                stmt.setString(5, horse.getDescription());
+                stmt.setLong(6, horse.getFavSportID());
+                return stmt;
+            }, keyHolder);
+        } catch (Exception e) {
+            throw new PersistenceException("Error during updating horse: " + e.getMessage());
+        }
+        return horse;
     }
 }

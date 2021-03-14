@@ -32,4 +32,12 @@ public interface HorseDao {
      * @throws NotFoundException   will be thrown if the sport could not be found in the database.
      */
     Horse getOneById(Long id);
+
+    /**
+     * @param horse which is to be updated in the database
+     * @return updated Horse
+     * @throws NotFoundException will be thrown if the horse could not be found in the database
+     * @throws PersistenceException will be thrown if something goes wrong during the database access
+     * */
+    Horse updateHorse(Horse horse) throws PersistenceException, NotFoundException;
 }

@@ -44,4 +44,12 @@ export class HorseService {
     console.log('Load horse details for ' + id);
     return this.httpClient.get<Horse>(baseUri + '/' + id);
   }
+
+  /**
+   * Updates an existing instance of horse
+   */
+  updateHorse(horse: Horse) {
+    console.log('Update horse with id ' + horse.id);
+    return this.httpClient.put<Horse>(baseUri + '/' + horse.id, horse);
+  }
 }

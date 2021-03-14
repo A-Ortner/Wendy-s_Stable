@@ -75,5 +75,19 @@ public class HorseEndpoint {
         }
     }
 
+    @PutMapping(value = "/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public HorseDto updateHorse(@RequestBody HorseDto horse) {
+        LOGGER.info("Put " + BASE_URL + "/{}", horse.getId());
+        LOGGER.info(horse.toString()); //todo: remove
+
+        try {
+            Horse horseEntity = horseMapper.dtoToEntity(horse);
+            return horseMapper.entityToDto(horseService.updateHorse(horseEntity));
+        } catch (ValidationException | ServiceException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Error during updating horse with id " + horse.getId()+ ": " + e.getMessage(), e);
+        }
+    }
+
 
 }
