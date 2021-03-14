@@ -1,4 +1,4 @@
-package at.ac.tuwien.sepm.assignment.individual.persistence.impl;
+package at.ac.tuwien.sepm.assignment.individual.persistence;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
