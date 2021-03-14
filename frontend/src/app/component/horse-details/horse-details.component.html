@@ -1,0 +1,72 @@
+<br>
+<button class="btn btn-secondary" (click)="goBack()"> BACK </button>
+<br><br>
+
+<form>
+  <div class="form-group">
+    <label for="horseName">
+      Name:
+    </label>
+    <p id="horseName" class="form-control">{{horse.name}}</p>
+  </div>
+
+  <div class="form-group">
+    <label for="horseSex">
+      Sex:
+    </label>
+    <p id="horseSex" class="form-control">{{horse.sex}}</p>
+  </div>
+  <div class="form-group">
+    <label for="date">Date of birth:</label>
+    <p id="date" class="form-control">{{horse.dateOfBirth}}</p>
+  </div>
+
+  <div class="form-group">
+    <label for="horseParent1">
+      Parent 1:
+    </label>
+    <span id="horseParent1" class="form-control"> dummy value
+    <button class="align-content-lg-between"> <a
+      routerLink="/details-horse/{{horse.id}}">
+      DETAILS
+    </a></button>
+      </span>
+  </div>
+
+  <div class="form-group">
+    <label for="horseParent2">
+      Parent 2:
+    </label>
+    <span id="horseParent2" class="form-control"> dummy value
+    <button class="align-content-lg-between"> <a
+      routerLink="/details-horse/{{horse.id}}">
+      DETAILS
+    </a></button>
+    </span>
+  </div>
+
+  <div class="form-group">
+    <label for="horseDescription">
+      Description:
+    </label>
+    <p id="horseDescription" class="form-control">{{horse.description}}</p>
+  </div>
+
+  <div class="form-group">
+    <label for="horseSport">
+      Favourite Sport:
+    </label>
+    <p id="horseSport" class="form-control">{{horse.favSport}}</p>
+  </div>
+
+  <button class="btn btn-light btn-outline-secondary">
+    <a routerLink="edit-horse/{{horse.id}}">
+      EDIT
+    </a></button>
+  <br><br>
+  <button class="btn btn-outline-dark"> DELETE</button>
+
+</form>
+
+
+
