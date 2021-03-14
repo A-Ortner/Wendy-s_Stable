@@ -85,8 +85,9 @@
       id="horseSport"
       name="datepicker"
       class="browser-default custom-select form-control"
-      [(ngModel)]="horse.favSport">
+      [(ngModel)]="horse.favSportId">
       <option selected hidden>Choose sport from list...</option>
+      <option value="null">none</option>
       <option *ngFor="let sport of sports">{{sport.name}}</option>
     </select>
   </div>

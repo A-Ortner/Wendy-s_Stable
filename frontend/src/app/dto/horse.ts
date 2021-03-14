@@ -4,6 +4,6 @@ export class Horse {
   sex: string;
   dateOfBirth: string;
   description: string;
-  favSport: number;
+  favSportId: number;
 }
 

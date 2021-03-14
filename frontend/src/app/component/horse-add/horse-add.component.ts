@@ -5,6 +5,7 @@ import {Location} from '@angular/common';
 import {NgbDateStruct} from '@ng-bootstrap/ng-bootstrap';
 import {Sport} from '../../dto/sport';
 import {SportService} from '../../service/sport.service';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-horse-add',
@@ -23,7 +24,8 @@ export class HorseAddComponent implements OnInit {
 
   constructor(private horseService: HorseService,
               private location: Location,
-              private sportService: SportService,) {
+              private sportService: SportService,
+              private router: Router) {
   }
 
   ngOnInit(): void {
@@ -57,14 +59,14 @@ export class HorseAddComponent implements OnInit {
   createHorse() {
     console.log('Horse:');
     console.log(this.horse);
-    this.horse.description = '';
-    this.horse.favSport = -1; //default values
+    if(this.horse.description == null) {this.horse.description = '';}
+    if(this.horse.favSportId == null) {this.horse.favSportId = -1;} //default values
     this.horseService.createHorse(this.horse).subscribe(
       (horse: Horse) => {
         this.horse = horse;
+        alert('Created ' + this.horse.name);
         this.goBack();
         this.resetHorse();
-        //todo: show success message
       },
       error => {
         //todo: add specific error message for user (in defaultServiceErrorHandlingMethod)
@@ -88,7 +90,7 @@ export class HorseAddComponent implements OnInit {
   }
 
   resetFavSport() {
-    this.horse.favSport=null;
+    this.horse.favSportId=null;
   }
 
   dateValid() {
