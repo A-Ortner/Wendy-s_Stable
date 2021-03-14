@@ -1,9 +1,7 @@
 package at.ac.tuwien.sepm.assignment.individual.endpoint;
 
-import at.ac.tuwien.sepm.assignment.individual.endpoint.dto.HorseDto;
 import at.ac.tuwien.sepm.assignment.individual.endpoint.dto.SportDto;
 import at.ac.tuwien.sepm.assignment.individual.endpoint.mapper.SportMapper;
-import at.ac.tuwien.sepm.assignment.individual.entity.Horse;
 import at.ac.tuwien.sepm.assignment.individual.entity.Sport;
 import at.ac.tuwien.sepm.assignment.individual.exception.NotFoundException;
 import at.ac.tuwien.sepm.assignment.individual.exception.ServiceException;

@@ -18,11 +18,12 @@ export class HorseAddComponent implements OnInit {
   horse: Horse;
   model: NgbDateStruct;
   sports: Sport[];
+  dateError: string;
+  dateOfBirth: Date ;
 
   constructor(private horseService: HorseService,
               private location: Location,
               private sportService: SportService,) {
-
   }
 
   ngOnInit(): void {
@@ -90,6 +91,18 @@ export class HorseAddComponent implements OnInit {
     this.horse.favSport=null;
   }
 
+  dateValid() {
+    //check if date set
+    //check if date is not in future
+    //check children: parents cannot be born after children
+    if(this.horse.dateOfBirth == null){
+      this.dateError = 'Date of birth must be set.';
+      return false;
+    }
+    return true;
+    //todo: check if in future in backend and for parents and propagate it to this error!
+  }
+
   private getAllSports() {
     this.sportService.getAllSports().subscribe(
       (sports: Sport[]) => {
@@ -121,4 +134,6 @@ export class HorseAddComponent implements OnInit {
       this.errorMessage = error.error.message;
     }
   }
+
+
 }
