@@ -17,7 +17,9 @@
     <td>{{(horse.name).toUpperCase()}}</td>
     <td>{{horse.sex}}</td>
     <td>{{horse.dateOfBirth}}</td>
-    <button class="btn btn-primary"> DETAILS</button>
+    <button class="btn btn-light btn-outline-secondary"> <a routerLink="/details-horse/{{horse.id}}">
+      DETAILS
+    </a></button>
     <button class="btn btn-outline-secondary"> EDIT </button>
     <button class="btn btn-outline-secondary"> DELETE</button>
   </tr>

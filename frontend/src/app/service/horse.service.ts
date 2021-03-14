@@ -34,4 +34,14 @@ export class HorseService {
     console.log('Load all horses ' + baseUri);
     return this.httpClient.get<Horse[]>(baseUri);
   }
+
+  /**
+   * Loads specific horse from the backend
+   *
+   * @param id of horse to load
+   */
+  getHorseById(id: number) {
+    console.log('Load horse details for ' + id);
+    return this.httpClient.get<Horse>(baseUri + '/' + id);
+  }
 }

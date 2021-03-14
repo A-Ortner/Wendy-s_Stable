@@ -51,4 +51,10 @@ public class HorseServiceImpl implements HorseService {
         }
     }
 
+    @Override
+    public Horse getOneById(Long id) {
+        LOGGER.trace("getOneById({})", id);
+        return horseDao.getOneById(id);
+    }
+
 }

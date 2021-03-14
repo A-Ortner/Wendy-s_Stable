@@ -3,6 +3,7 @@ package at.ac.tuwien.sepm.assignment.individual.endpoint;
 import at.ac.tuwien.sepm.assignment.individual.endpoint.dto.HorseDto;
 import at.ac.tuwien.sepm.assignment.individual.endpoint.mapper.HorseMapper;
 import at.ac.tuwien.sepm.assignment.individual.entity.Horse;
+import at.ac.tuwien.sepm.assignment.individual.exception.NotFoundException;
 import at.ac.tuwien.sepm.assignment.individual.exception.ServiceException;
 import at.ac.tuwien.sepm.assignment.individual.exception.ValidationException;
 import at.ac.tuwien.sepm.assignment.individual.service.HorseService;
@@ -30,6 +31,16 @@ public class HorseEndpoint {
     public HorseEndpoint(HorseService horseService, HorseMapper horseMapper) {
         this.horseService = horseService;
         this.horseMapper = horseMapper;
+    }
+
+    @GetMapping(value = "/{id}")
+    public HorseDto getOneById(@PathVariable("id") Long id) {
+        LOGGER.info("GET " + BASE_URL + "/{}", id);
+        try {
+            return horseMapper.entityToDto(horseService.getOneById(id));
+        } catch (NotFoundException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Error during reading sport", e);
+        }
     }
 
     @PostMapping

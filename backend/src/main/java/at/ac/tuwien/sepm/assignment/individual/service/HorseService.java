@@ -1,6 +1,7 @@
 package at.ac.tuwien.sepm.assignment.individual.service;
 
 import at.ac.tuwien.sepm.assignment.individual.entity.Horse;
+import at.ac.tuwien.sepm.assignment.individual.exception.NotFoundException;
 import at.ac.tuwien.sepm.assignment.individual.exception.ServiceException;
 import at.ac.tuwien.sepm.assignment.individual.exception.ValidationException;
 
@@ -23,4 +24,14 @@ public interface HorseService {
      * @throws ServiceException if something goes wrong during during data processing.
      */
     List<Horse> getAllHorses() throws ServiceException;
+
+    /**
+     * Gets the sport with a given ID.
+     *
+     * @param id of the sport to find.
+     * @return the sport with the specified id.
+     * @throws RuntimeException  if something goes wrong during data processing.
+     * @throws NotFoundException if the sport could not be found in the system.
+     */
+    Horse getOneById(Long id);
 }

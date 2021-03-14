@@ -1,6 +1,7 @@
 package at.ac.tuwien.sepm.assignment.individual.persistence.impl;
 
 import at.ac.tuwien.sepm.assignment.individual.entity.Horse;
+import at.ac.tuwien.sepm.assignment.individual.exception.NotFoundException;
 import at.ac.tuwien.sepm.assignment.individual.exception.PersistenceException;
 import at.ac.tuwien.sepm.assignment.individual.persistence.HorseDao;
 import at.ac.tuwien.sepm.assignment.individual.util.Sexes;
@@ -14,8 +15,6 @@ import org.springframework.stereotype.Repository;
 
 import java.lang.invoke.MethodHandles;
 import java.sql.*;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -82,5 +81,16 @@ public class HorseJdbcDao implements HorseDao {
             throw new PersistenceException("Error during running the query in database: " + e.getMessage());
         }
         return horses;
+    }
+
+    @Override
+    public Horse getOneById(Long id) {
+        LOGGER.trace("getOneById({})", id);
+        final String sql = "SELECT * FROM " + TABLE_NAME + " WHERE id=?";
+        List<Horse> horses = jdbcTemplate.query(sql, this::mapRow, id);
+
+        if (horses.isEmpty()) throw new NotFoundException("Could not find sport with id " + id);
+
+        return horses.get(0);
     }
 }

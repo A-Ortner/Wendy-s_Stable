@@ -3,12 +3,14 @@ import { Routes, RouterModule } from '@angular/router';
 import {SportComponent} from './component/sport/sport.component';
 import {HorseMainComponent} from './component/horse-main/horse-main.component';
 import {HorseAddComponent} from './component/horse-add/horse-add.component';
+import {HorseDetailsComponent} from './component/horse-details/horse-details.component';
 
 const routes: Routes = [
   {path: '', redirectTo: 'sports', pathMatch: 'full'},
   {path: 'sports', component: SportComponent},
   {path: 'horses', component: HorseMainComponent},
   {path: 'add-horse', component: HorseAddComponent},
+  {path: 'details-horse/:id', component: HorseDetailsComponent},
 ];
 
 @NgModule({
