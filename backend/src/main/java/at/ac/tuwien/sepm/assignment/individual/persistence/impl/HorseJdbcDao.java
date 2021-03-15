@@ -15,7 +15,6 @@ import org.springframework.stereotype.Repository;
 
 import java.lang.invoke.MethodHandles;
 import java.sql.*;
-import java.time.LocalDateTime;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -42,7 +41,7 @@ public class HorseJdbcDao implements HorseDao {
 
         horse.setDateOfBirth((resultSet.getDate("dateofbirth").toLocalDate()));
         horse.setDescription(resultSet.getString("description"));
-        horse.setFavSportID(resultSet.getLong("favsportid"));
+        horse.setFavSportId(resultSet.getLong("favsportid"));
         return horse;
     }
 
@@ -58,7 +57,7 @@ public class HorseJdbcDao implements HorseDao {
                 stmt.setString(2, horse.getSex().name());
                 stmt.setDate(3, java.sql.Date.valueOf(horse.getDateOfBirth()));
                 stmt.setString(4, horse.getDescription());
-                stmt.setLong(5, horse.getFavSportID());
+                stmt.setLong(5, horse.getFavSportId());
                 return stmt;
             }, keyHolder);
         } catch (Exception e) {
@@ -80,6 +79,9 @@ public class HorseJdbcDao implements HorseDao {
         } catch (Exception e) {
             LOGGER.error(e.getMessage());
             throw new PersistenceException("Error during running the query in database: " + e.getMessage());
+        }
+        for (Horse h : horses) {
+            LOGGER.info(h.toString());
         }
         return horses;
     }
@@ -110,7 +112,7 @@ public class HorseJdbcDao implements HorseDao {
                 stmt.setString(3, horse.getSex().name());
                 stmt.setDate(4, java.sql.Date.valueOf(horse.getDateOfBirth()));
                 stmt.setString(5, horse.getDescription());
-                stmt.setLong(6, horse.getFavSportID());
+                stmt.setLong(6, horse.getFavSportId());
                 return stmt;
             }, keyHolder);
         } catch (Exception e) {

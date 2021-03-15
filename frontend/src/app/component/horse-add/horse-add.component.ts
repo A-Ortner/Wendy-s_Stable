@@ -30,8 +30,7 @@ export class HorseAddComponent implements OnInit {
 
   ngOnInit(): void {
     this.horse = new Horse();
-    // @ts-ignore
-    this.sports = this.getAllSports();
+    this.getAllSports();
   }
 
   /**

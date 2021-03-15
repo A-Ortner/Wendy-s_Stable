@@ -88,7 +88,7 @@
       [(ngModel)]="horse.favSportId">
       <option selected hidden>Choose sport from list...</option>
       <option value="null">none</option>
-      <option *ngFor="let sport of sports">{{sport.name}}</option>
+      <option *ngFor="let sport of sports" value={{sport.id}}>{{sport.name}}</option>
     </select>
   </div>
 
