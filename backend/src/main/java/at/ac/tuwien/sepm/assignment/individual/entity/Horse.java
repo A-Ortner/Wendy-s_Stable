@@ -1,6 +1,7 @@
 package at.ac.tuwien.sepm.assignment.individual.entity;
 
 import at.ac.tuwien.sepm.assignment.individual.util.Sexes;
+
 import java.time.LocalDate;
 import java.util.Objects;
 
@@ -11,26 +12,26 @@ public class Horse {
     private Sexes sex;
     private LocalDate dateOfBirth;
     private String description;
-    private Long favSportID;
+    private Long favSportId;
 
     public Horse() {
     }
 
-    public Horse(String name, Sexes sex, LocalDate dateOfBirth, String description, Long favSportID) {
+    public Horse(String name, Sexes sex, LocalDate dateOfBirth, String description, Long favSportId) {
         this.name = name;
         this.sex = sex;
         this.dateOfBirth = dateOfBirth;
         this.description = description;
-        this.favSportID = favSportID;
+        this.favSportId = favSportId;
     }
 
-    public Horse(Long id, String name, Sexes sex, LocalDate dateOfBirth, String description, Long favSportID) {
+    public Horse(Long id, String name, Sexes sex, LocalDate dateOfBirth, String description, Long favSportId) {
         this.id = id;
         this.name = name;
         this.sex = sex;
         this.dateOfBirth = dateOfBirth;
         this.description = description;
-        this.favSportID = favSportID;
+        this.favSportId = favSportId;
     }
 
     public Long getId() {
@@ -73,12 +74,12 @@ public class Horse {
         this.description = description;
     }
 
-    public Long getFavSportID() {
-        return favSportID;
+    public Long getFavSportId() {
+        return favSportId;
     }
 
-    public void setFavSportID(Long favSportID) {
-        this.favSportID = favSportID;
+    public void setFavSportId(Long favSportId) {
+        this.favSportId = favSportId;
     }
 
     @Override
@@ -91,12 +92,12 @@ public class Horse {
             sex == horse.sex &&
             dateOfBirth.equals(horse.dateOfBirth) &&
             Objects.equals(description, horse.description) &&
-            Objects.equals(favSportID, horse.favSportID);
+            Objects.equals(favSportId, horse.favSportId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, sex, dateOfBirth, description, favSportID);
+        return Objects.hash(id, name, sex, dateOfBirth, description, favSportId);
     }
 
     private String fieldsString() {
@@ -105,7 +106,7 @@ public class Horse {
             ", sex=" + sex +
             ", dateOfBirth=" + dateOfBirth +
             ", description='" + description + '\'' +
-            ", favSport='" + favSportID + '\'';
+            ", favSport='" + favSportId + '\'';
     }
 
     @Override

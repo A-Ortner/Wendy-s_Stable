@@ -5,6 +5,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {HorseService} from '../../service/horse.service';
 import {Sport} from '../../dto/sport';
 import {SportService} from '../../service/sport.service';
+import {timer} from 'rxjs';
 
 
 @Component({
@@ -19,6 +20,7 @@ export class HorseEditComponent implements OnInit {
   errorMessage = '';
   sports: Sport[];
   dateError: string;
+  sport: Sport;
 
   constructor(private location: Location,
               private route: ActivatedRoute,
@@ -27,19 +29,9 @@ export class HorseEditComponent implements OnInit {
               private router: Router) {
   }
 
-  ngOnInit(): void {
-    this.getHorse();
-    // @ts-ignore
-    this.sports = this.getAllSports();
-  }
-
-  /**
-   * load the horse with the ID specified in URL
-   */
-  getHorse(): void {
-    const id = +this.route.snapshot.paramMap.get('id');
-    this.horseService.getHorseById(id)
-      .subscribe(horse => this.horse = horse);
+  async ngOnInit() {
+    this.getHorseAndSport();
+    this.getAllSports();
   }
 
   /**
@@ -59,15 +51,13 @@ export class HorseEditComponent implements OnInit {
     this.horseService.updateHorse(this.horse).subscribe(
       (horse: Horse) => {
         this.horse = horse;
+        alert('Updated ' + this.horse.name);
+        this.router.navigate(['/horses']);
       },
       error => {
         this.defaultServiceErrorHandling(error);
       }
     );
-    if (!this.error) {
-      alert('Updated ' + this.horse.name);
-      this.router.navigate(['/horses']);
-    }
   }
 
   /**
@@ -90,10 +80,30 @@ export class HorseEditComponent implements OnInit {
     //todo: check if in future in backend and for parents and propagate it to this error!
   }
 
+  /**
+   * load the horse with the ID specified in URL
+   */
+  private getHorseAndSport(): void {
+    const id = +this.route.snapshot.paramMap.get('id');
+    this.horseService.getHorseById(id)
+      .subscribe(horse => {
+        this.horse = horse;
+        console.log('horse and sport:');
+        console.log(this.horse);
+        this.getSportById(this.horse.favSportId);
+      });
+
+  }
+
+
+  /**
+   * load all sports
+   */
   private getAllSports() {
     this.sportService.getAllSports().subscribe(
       (sports: Sport[]) => {
         this.sports = sports;
+        console.log(this.sports);
       },
       error => {
         this.defaultServiceErrorHandling(error);
@@ -101,6 +111,17 @@ export class HorseEditComponent implements OnInit {
     );
   }
 
+  private getSportById(id: number) {
+    this.sportService.getSportById(id).subscribe(
+      (sport: Sport) => {
+        this.sport = sport;
+        console.log(sport); //todo: remove
+      },
+      error => {
+        this.defaultServiceErrorHandling(error);
+      }
+    );
+  }
 
   private defaultServiceErrorHandling(error: any) {
     console.log(error);

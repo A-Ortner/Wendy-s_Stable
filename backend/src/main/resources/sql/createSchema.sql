@@ -13,5 +13,5 @@ CREATE TABLE IF NOT EXISTS horse
     description VARCHAR(2000),
     favsportid  BIGINT,
 
-    foreign key (favSportID) references sport (id)
+    foreign key (favsportid) references sport (id)
 );

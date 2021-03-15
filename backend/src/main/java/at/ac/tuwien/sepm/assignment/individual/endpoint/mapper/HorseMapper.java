@@ -4,6 +4,7 @@ import at.ac.tuwien.sepm.assignment.individual.endpoint.dto.HorseDto;
 import at.ac.tuwien.sepm.assignment.individual.entity.Horse;
 import org.springframework.stereotype.Component;
 
+
 @Component
 public class HorseMapper {
 
@@ -14,18 +15,18 @@ public class HorseMapper {
             horse.getSex(),
             horse.getDateOfBirth(),
             horse.getDescription(),
-            horse.getFavSportID());
+            horse.getFavSportId());
     }
 
     public Horse dtoToEntity(HorseDto horseDto){
         if(horseDto == null) return null;
-        if(horseDto.getFavSportID() == null) horseDto.setFavSportID(-1L);
+        if(horseDto.getFavSportId() == null) horseDto.setFavSportId(-1L);
         return new Horse(horseDto.getId(),
             horseDto.getName(),
             horseDto.getSex(),
             horseDto.getDateOfBirth(),
             horseDto.getDescription(),
-            horseDto.getFavSportID());
+            horseDto.getFavSportId());
 
     }
 }

@@ -14,26 +14,26 @@ public class HorseDto {
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     private LocalDate dateOfBirth;
     private String description;
-    private Long favSportID;
+    private Long favSportId;
 
     public HorseDto() {
     }
 
-    public HorseDto(String name, Sexes sex, LocalDate dateOfBirth, String description, Long favSportID) {
+    public HorseDto(String name, Sexes sex, LocalDate dateOfBirth, String description, Long favSportId) {
         this.name = name;
         this.sex = sex;
         this.dateOfBirth = dateOfBirth;
         this.description = description;
-        this.favSportID = favSportID;
+        this.favSportId = favSportId;
     }
 
-    public HorseDto(Long id, String name, Sexes sex, LocalDate dateOfBirth, String description, Long favSportID) {
+    public HorseDto(Long id, String name, Sexes sex, LocalDate dateOfBirth, String description, Long favSportId) {
         this.id = id;
         this.name = name;
         this.sex = sex;
         this.dateOfBirth = dateOfBirth;
         this.description = description;
-        this.favSportID = favSportID;
+        this.favSportId = favSportId;
     }
 
     public Long getId() {
@@ -72,12 +72,12 @@ public class HorseDto {
         this.description = description;
     }
 
-    public Long getFavSportID() {
-        return favSportID;
+    public Long getFavSportId() {
+        return favSportId;
     }
 
-    public void setFavSportID(Long favSportID) {
-        this.favSportID = favSportID;
+    public void setFavSportId(Long favSportId) {
+        this.favSportId = favSportId;
     }
 
     @Override
@@ -90,12 +90,12 @@ public class HorseDto {
             sex == horseDTO.sex &&
             dateOfBirth.equals(horseDTO.dateOfBirth) &&
             Objects.equals(description, horseDTO.description) &&
-            Objects.equals(favSportID, horseDTO.favSportID);
+            Objects.equals(favSportId, horseDTO.favSportId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, sex, dateOfBirth, description, favSportID);
+        return Objects.hash(id, name, sex, dateOfBirth, description, favSportId);
     }
 
     private String fieldsString() {
@@ -104,7 +104,7 @@ public class HorseDto {
             ", sex=" + sex +
             ", dateOfBirth=" + dateOfBirth +
             ", description='" + description + '\'' +
-            ", favSport='" + favSportID + '\'';
+            ", favSport='" + favSportId + '\'';
     }
 
     @Override
