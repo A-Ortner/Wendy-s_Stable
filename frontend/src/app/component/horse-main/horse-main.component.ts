@@ -17,8 +17,7 @@ export class HorseMainComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // @ts-ignore
-    this.horses = this.getAllHorses();
+    this.getAllHorses();
   }
 
   /**

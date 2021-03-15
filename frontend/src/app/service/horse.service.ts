@@ -40,7 +40,7 @@ export class HorseService {
    *
    * @param id of horse to load
    */
-  getHorseById(id: number) {
+  getHorseById(id: number): Observable<Horse> {
     console.log('Load horse details for ' + id);
     return this.httpClient.get<Horse>(baseUri + '/' + id);
   }
@@ -48,7 +48,7 @@ export class HorseService {
   /**
    * Updates an existing instance of horse
    */
-  updateHorse(horse: Horse) {
+  updateHorse(horse: Horse): Observable<any> {
     console.log('Update horse with id ' + horse.id);
     return this.httpClient.put<Horse>(baseUri + '/' + horse.id, horse);
   }
