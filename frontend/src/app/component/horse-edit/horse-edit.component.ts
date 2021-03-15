@@ -5,7 +5,6 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {HorseService} from '../../service/horse.service';
 import {Sport} from '../../dto/sport';
 import {SportService} from '../../service/sport.service';
-import {timer} from 'rxjs';
 
 
 @Component({
@@ -15,12 +14,14 @@ import {timer} from 'rxjs';
 })
 export class HorseEditComponent implements OnInit {
 
-  horse: Horse;
   error = false;
   errorMessage = '';
-  sports: Sport[];
   dateError: string;
+
+  sports: Sport[];
   sport: Sport;
+  horses: Horse[];
+  horse: Horse;
 
   constructor(private location: Location,
               private route: ActivatedRoute,
@@ -30,8 +31,7 @@ export class HorseEditComponent implements OnInit {
   }
 
   async ngOnInit() {
-    this.getHorseAndSport();
-    this.getAllSports();
+    this.getAllFields();
   }
 
   /**
@@ -81,46 +81,29 @@ export class HorseEditComponent implements OnInit {
   }
 
   /**
-   * load the horse with the ID specified in URL
+   * loads a list of all horses from the DB, then filters the horse with the ID specified in URL out
+   * loads a list of all sports from the DB, then filters the sport with the ID specified in horse.favSportId
    */
-  private getHorseAndSport(): void {
-    const id = +this.route.snapshot.paramMap.get('id');
-    this.horseService.getHorseById(id)
-      .subscribe(horse => {
-        this.horse = horse;
-        console.log('horse and sport:');
-        console.log(this.horse);
-        this.getSportById(this.horse.favSportId);
-      });
+  private getAllFields() {
+    this.horseService.getAllHorses()
+      .subscribe(horses => {
+          this.horses = horses;
+          const id = +this.route.snapshot.paramMap.get('id');
+          this.horse = this.horses.filter(h => h.id === id)[0];
 
-  }
-
-
-  /**
-   * load all sports
-   */
-  private getAllSports() {
-    this.sportService.getAllSports().subscribe(
-      (sports: Sport[]) => {
-        this.sports = sports;
-        console.log(this.sports);
-      },
-      error => {
-        this.defaultServiceErrorHandling(error);
-      }
-    );
-  }
-
-  private getSportById(id: number) {
-    this.sportService.getSportById(id).subscribe(
-      (sport: Sport) => {
-        this.sport = sport;
-        console.log(sport); //todo: remove
-      },
-      error => {
-        this.defaultServiceErrorHandling(error);
-      }
-    );
+          this.sportService.getAllSports().subscribe(
+            (sports: Sport[]) => {
+              this.sports = sports;
+              this.sport = this.sports.filter(s => s.id === this.horse.favSportId)[0];
+            },
+            error => {
+              this.defaultServiceErrorHandling(error);
+            }
+          );
+        }, error => {
+          this.defaultServiceErrorHandling(error);
+        }
+      );
   }
 
   private defaultServiceErrorHandling(error: any) {
@@ -136,5 +119,6 @@ export class HorseEditComponent implements OnInit {
       this.errorMessage = error.error.message;
     }
   }
+
 
 }
