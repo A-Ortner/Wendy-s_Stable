@@ -17,7 +17,6 @@ export class SportComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.loadSport(-1);
   }
 
   /**

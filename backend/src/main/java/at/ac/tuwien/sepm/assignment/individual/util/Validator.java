@@ -8,7 +8,6 @@ import java.time.LocalDate;
 import at.ac.tuwien.sepm.assignment.individual.exception.NotFoundException;
 import at.ac.tuwien.sepm.assignment.individual.exception.ValidationException;
 import at.ac.tuwien.sepm.assignment.individual.persistence.SportDao;
-import at.ac.tuwien.sepm.assignment.individual.service.SportService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -23,10 +22,11 @@ public class Validator {
     }
 
     public void validateNewSport(Sport sport) {
+        if(sport.getName()==null) throw new ValidationException("Name is not set.");
     }
 
     public void validateNewHorse(Horse horse) throws ValidationException {
-        //todo: check if horse already exists(?)
+        //todo: if id: check if it already exists (for update)
 
         if (horse.getName() == null || horse.getName().isBlank()){
             LOGGER.error("Horse´s name is null.");
@@ -54,9 +54,9 @@ public class Validator {
             throw new ValidationException("description too long");
         }
 
-        if(horse.getFavSportID() != null){
+        if(horse.getFavSportId() != null){
             try {
-                sportDao.getOneById(horse.getFavSportID());
+                sportDao.getOneById(horse.getFavSportId());
             }catch (NotFoundException e){
                 //should never happen because sport is chosen via enum
                 LOGGER.error("Horse´s sport is not in the database.");

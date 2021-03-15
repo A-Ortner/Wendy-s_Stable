@@ -5,6 +5,7 @@ import java.util.Objects;
 public class Sport {
     private Long id;
     private String name;
+    private String description;
 
     public Sport() {
     }
@@ -18,12 +19,26 @@ public class Sport {
         this.id = id;
     }
 
+    public Sport(Long id, String name, String description) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+    }
+
     public Long getId() {
         return id;
     }
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public String getName() {
@@ -49,11 +64,14 @@ public class Sport {
     }
 
     protected String fieldsString() {
-        return "id=" + id + ", name='" + name + '\'';
+        return "id=" + id +
+            ", name='" + name + '\''+
+            ", description='" + description + '\'';
     }
 
     @Override
     public String toString() {
         return "Sport{ " + fieldsString() +" }";
     }
+
 }

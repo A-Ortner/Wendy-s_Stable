@@ -4,9 +4,9 @@
 
 
 DELETE FROM sport where ID < 0;
-INSERT INTO sport (ID, NAME)
-VALUES (-1, 'Polo')
-       , (-2, 'Dressage')
-       , (-3, 'Foxhunting')
+INSERT INTO sport (ID, NAME, DESCRIPTION)
+VALUES (-1, 'Polo', NULL)
+       , (-2, 'Dressage', NULL)
+       , (-3, 'Foxhunting', NULL)
       ;
 

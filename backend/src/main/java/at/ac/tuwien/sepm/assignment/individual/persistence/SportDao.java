@@ -24,4 +24,13 @@ public interface SportDao {
      * @throws PersistenceException if something goes wrong during during data processing.
      */
     List<Sport> getAllSports() throws PersistenceException;
+
+
+    /**
+     * creates a new entry in the database
+     * @param sport new entry to be created
+     * @return new Sport with newly set id
+     * @throws PersistenceException in case an error occurs in the database
+     */
+    Sport createSport(Sport sport) throws PersistenceException;
 }

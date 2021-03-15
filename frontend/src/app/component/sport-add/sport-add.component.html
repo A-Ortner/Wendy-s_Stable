@@ -1,0 +1,51 @@
+<div *ngIf="error" class="alert alert-danger alert-dismissible fade show" role="alert">
+  <strong>Error! </strong> {{ errorMessage }}
+  <button type="button" (click)="vanishError()" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<br>
+<button class="btn btn-secondary" (click)="goBack()"> BACK </button>
+<br><br>
+
+<form>
+  <div class="form-group">
+    <label for="sportName">
+      Name:
+    </label>
+    <input
+      required
+      id="sportName"
+      ngModel
+      name="name"
+      #name = "ngModel"
+      type="text"
+      class="form-control"
+      placeholder="Enter name..."
+      [(ngModel)]="sport.name">
+  </div>
+  <div class="alert alert-danger" *ngIf="name.touched && !name.valid">Name must be set.</div>
+
+
+  <div class="form-group">
+    <label for="sportDescription">
+      Description:
+    </label>
+    <textarea
+      id="sportDescription"
+      name="description"
+      cols="30" rows="10"
+      class="form-control"
+      placeholder="Enter description..."
+      [(ngModel)]="sport.description"></textarea>
+  </div>
+
+
+  <button class="btn btn-primary" (click)="createSport()"> ADD </button>
+  <br><br>
+  <button class="btn btn-outline-dark">
+    <a routerLink="/sports">
+      DISCARD
+    </a>
+  </button>
+</form>

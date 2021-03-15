@@ -5,13 +5,9 @@
   </button>
 </div>
 
-<div class="container mt-3" *ngIf="sport">
-  <div class="alert alert-success" role="alert">
-    <h4 class="alert-heading">Well done!</h4>
-    <p>Your application is up and running</p>
-    <hr>
-    <p>This is the name of the sport with id -1 from your backend system:
-      <span class="font-weight-bold">{{sport.name}}</span>
-    </p>
-  </div>
-</div>
+<p id="horse-main-headline">Have a look at all kinds of sport or add a new one here!</p>
+<button class="add-button">
+  <a routerLink="/add-sport">
+    + ADD NEW SPORT
+  </a>
+</button>

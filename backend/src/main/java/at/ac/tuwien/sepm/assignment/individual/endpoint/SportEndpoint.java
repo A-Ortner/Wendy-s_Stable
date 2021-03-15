@@ -5,6 +5,7 @@ import at.ac.tuwien.sepm.assignment.individual.endpoint.mapper.SportMapper;
 import at.ac.tuwien.sepm.assignment.individual.entity.Sport;
 import at.ac.tuwien.sepm.assignment.individual.exception.NotFoundException;
 import at.ac.tuwien.sepm.assignment.individual.exception.ServiceException;
+import at.ac.tuwien.sepm.assignment.individual.exception.ValidationException;
 import at.ac.tuwien.sepm.assignment.individual.service.SportService;
 
 import java.lang.invoke.MethodHandles;
@@ -54,6 +55,23 @@ public class SportEndpoint {
             }
             return sportDtos;
         } catch (ServiceException e) {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), e);
+        }
+    }
+
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    public SportDto createSport(@RequestBody SportDto sportDto){
+        LOGGER.info("Post " + BASE_URL);
+        LOGGER.info(sportDto.toString()); //todo: change to .debug later
+        try {
+            Sport sportToBeCreated = sportMapper.dtoToEntity(sportDto);
+            return sportMapper.entityToDto(sportService.createSport(sportToBeCreated));
+        }catch(ValidationException e){
+            //422: The request was well-formed but was unable to be followed due to semantic errors.
+            throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, e.getMessage());
+        }catch (ServiceException e){
+            //500: internal server error
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), e);
         }
     }

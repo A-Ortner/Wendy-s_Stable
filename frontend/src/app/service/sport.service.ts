@@ -31,6 +31,9 @@ export class SportService {
     return this.httpClient.get<Sport[]>(baseUri);
   }
 
+  /**
+   * Adds a new sport to the database
+   */
   createSport(sport: Sport): Observable<Sport> {
     console.log('Create new sport', sport);
     return this.httpClient.post<Sport>(

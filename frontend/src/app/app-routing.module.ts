@@ -5,6 +5,7 @@ import {HorseMainComponent} from './component/horse-main/horse-main.component';
 import {HorseAddComponent} from './component/horse-add/horse-add.component';
 import {HorseDetailsComponent} from './component/horse-details/horse-details.component';
 import {HorseEditComponent} from './component/horse-edit/horse-edit.component';
+import {SportAddComponent} from './component/sport-add/sport-add.component';
 
 const routes: Routes = [
   {path: '', redirectTo: 'sports', pathMatch: 'full'},
@@ -13,7 +14,8 @@ const routes: Routes = [
   {path: 'add-horse', component: HorseAddComponent},
   {path: 'details-horse/:id', component: HorseDetailsComponent},
   {path: 'edit-horse/:id', component: HorseEditComponent},
-  {path: 'details-horse/:id/edit-horse/:id', redirectTo: 'edit-horse/:id'}
+  {path: 'details-horse/:id/edit-horse/:id', redirectTo: 'edit-horse/:id'},
+  {path: 'add-sport', component: SportAddComponent}
 ];
 
 @NgModule({

@@ -1,9 +1,9 @@
 package at.ac.tuwien.sepm.assignment.individual.service.impl;
 
 import at.ac.tuwien.sepm.assignment.individual.entity.Sport;
-import at.ac.tuwien.sepm.assignment.individual.exception.NotFoundException;
 import at.ac.tuwien.sepm.assignment.individual.exception.PersistenceException;
 import at.ac.tuwien.sepm.assignment.individual.exception.ServiceException;
+import at.ac.tuwien.sepm.assignment.individual.exception.ValidationException;
 import at.ac.tuwien.sepm.assignment.individual.persistence.SportDao;
 import at.ac.tuwien.sepm.assignment.individual.service.SportService;
 import at.ac.tuwien.sepm.assignment.individual.util.Validator;
@@ -41,6 +41,19 @@ public class SportServiceImpl implements SportService {
             return dao.getAllSports();
         }catch (PersistenceException e){
             throw new ServiceException(e.getMessage(),e);
+        }
+    }
+
+    @Override
+    public Sport createSport(Sport sport) throws ValidationException, ServiceException {
+        LOGGER.trace("createSport({})", sport.toString());
+
+        validator.validateNewSport(sport);
+
+        try {
+            return dao.createSport(sport);
+        } catch (PersistenceException e) {
+            throw new ServiceException(e.getMessage(), e.getCause());
         }
     }
 
