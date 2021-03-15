@@ -24,6 +24,7 @@ import {MatSnackBarModule} from '@angular/material/snack-bar';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { HorseDetailsComponent } from './component/horse-details/horse-details.component';
 import { HorseEditComponent } from './component/horse-edit/horse-edit.component';
+import { SportAddComponent } from './component/sport-add/sport-add.component';
 
 @NgModule({
   declarations: [
@@ -35,6 +36,7 @@ import { HorseEditComponent } from './component/horse-edit/horse-edit.component'
     DialogComponent,
     HorseDetailsComponent,
     HorseEditComponent,
+    SportAddComponent,
   ],
   imports: [
     BrowserModule,

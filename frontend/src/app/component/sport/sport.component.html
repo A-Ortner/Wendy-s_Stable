@@ -5,9 +5,24 @@
   </button>
 </div>
 
+<br>
 <p id="horse-main-headline">Have a look at all kinds of sport or add a new one here!</p>
 <button class="add-button">
   <a routerLink="/add-sport">
     + ADD NEW SPORT
   </a>
 </button>
+
+<hr>
+<table id="table_horses" width="100%">
+  <tr>
+  <tr>
+    <th>Name</th>
+    <th>Description</th>
+  </tr>
+  <tr *ngFor="let sport of sports">
+    <td>{{(sport.name).toUpperCase()}}</td>
+    <td>{{sport.description}}</td>
+  </tr>
+
+</table>

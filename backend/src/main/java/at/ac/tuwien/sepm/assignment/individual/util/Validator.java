@@ -23,6 +23,9 @@ public class Validator {
 
     public void validateNewSport(Sport sport) {
         if(sport.getName()==null) throw new ValidationException("Name is not set.");
+        if((sport.getDescription() !=null)&&(sport.getDescription().length() > 2000 -1)){
+            throw new ValidationException("Description is too long.");
+        }
     }
 
     public void validateNewHorse(Horse horse) throws ValidationException {

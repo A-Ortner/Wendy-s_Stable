@@ -53,7 +53,7 @@ public class SportJdbcDao implements SportDao {
             throw new PersistenceException("Error during running the query in database: " + e.getMessage());
         }
         for (Sport s: sports) {
-            LOGGER.info(s.getId() + s.getName());
+            LOGGER.info(s.getId() + s.getName() + s.getDescription());
         }
         return sports;
     }
@@ -75,7 +75,7 @@ public class SportJdbcDao implements SportDao {
             throw new PersistenceException("Error during saving horse: " + e.getMessage());
         }
         sport.setId(((Number) keyHolder.getKeys().get("id")).longValue());
-        LOGGER.info("Saved horse {}", sport.toString());
+        LOGGER.info("Saved sport {}", sport.toString());
         return sport;
     }
 

@@ -12,11 +12,13 @@ export class SportComponent implements OnInit {
   error = false;
   errorMessage = '';
   sport: Sport;
+  sports: Sport[];
 
   constructor(private sportService: SportService) {
   }
 
   ngOnInit() {
+    this.getAllSports();
   }
 
   /**
@@ -57,4 +59,18 @@ export class SportComponent implements OnInit {
     }
   }
 
+  /**
+   * loads all sports form the DB
+   */
+  private getAllSports() {
+    this.sportService.getAllSports().subscribe(
+      (sports: Sport[]) => {
+        this.sports = sports;
+        console.log(sports);
+      },
+      error => {
+        this.defaultServiceErrorHandling(error);
+      }
+    );
+  }
 }
