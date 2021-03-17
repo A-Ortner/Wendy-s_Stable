@@ -12,7 +12,17 @@ CREATE TABLE IF NOT EXISTS horse
     sex         CHAR NOT NULL,
     dateofbirth DATE    NOT NULL,
     description VARCHAR(2000),
-    favsportid  BIGINT,
+    favsportid  BIGINT NULL,
+    parent1id BIGINT NULL,
+    parent2id BIGINT NULL,
 
     foreign key (favsportid) references sport (id)
 );
+
+
+
+ALTER TABLE horse
+    ADD FOREIGN KEY (parent1id) REFERENCES horse (id);
+
+ALTER TABLE horse
+    ADD FOREIGN KEY (parent2id) REFERENCES horse (id);

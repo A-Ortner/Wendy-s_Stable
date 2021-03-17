@@ -85,7 +85,7 @@ public class HorseEndpoint {
             Horse horseEntity = horseMapper.dtoToEntity(horse);
             return horseMapper.entityToDto(horseService.updateHorse(horseEntity));
         } catch (ValidationException | ServiceException e) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Error during updating horse with id " + horse.getId()+ ": " + e.getMessage(), e);
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Error during updating horse with name " + horse.getName()+ ": " + e.getMessage(), e);
         }
     }
 

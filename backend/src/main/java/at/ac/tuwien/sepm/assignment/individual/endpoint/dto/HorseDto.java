@@ -15,6 +15,8 @@ public class HorseDto {
     private LocalDate dateOfBirth;
     private String description;
     private Long favSportId;
+    private Long parent1Id;
+    private Long parent2Id;
 
     public HorseDto() {
     }
@@ -34,6 +36,17 @@ public class HorseDto {
         this.dateOfBirth = dateOfBirth;
         this.description = description;
         this.favSportId = favSportId;
+    }
+
+    public HorseDto(Long id, String name, Sexes sex, LocalDate dateOfBirth, String description, Long favSportId, Long parent1Id, Long parent2Id) {
+        this.id = id;
+        this.name = name;
+        this.sex = sex;
+        this.dateOfBirth = dateOfBirth;
+        this.description = description;
+        this.favSportId = favSportId;
+        this.parent1Id = parent1Id;
+        this.parent2Id = parent2Id;
     }
 
     public Long getId() {
@@ -80,22 +93,40 @@ public class HorseDto {
         this.favSportId = favSportId;
     }
 
+    public Long getParent1Id() {
+        return parent1Id;
+    }
+
+    public void setParent1Id(Long parent1Id) {
+        this.parent1Id = parent1Id;
+    }
+
+    public Long getParent2Id() {
+        return parent2Id;
+    }
+
+    public void setParent2Id(Long parent2Id) {
+        this.parent2Id = parent2Id;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        HorseDto horseDTO = (HorseDto) o;
-        return Objects.equals(id, horseDTO.id) &&
-            name.equals(horseDTO.name) &&
-            sex == horseDTO.sex &&
-            dateOfBirth.equals(horseDTO.dateOfBirth) &&
-            Objects.equals(description, horseDTO.description) &&
-            Objects.equals(favSportId, horseDTO.favSportId);
+        HorseDto horseDto = (HorseDto) o;
+        return Objects.equals(id, horseDto.id) &&
+            name.equals(horseDto.name) &&
+            sex == horseDto.sex &&
+            dateOfBirth.equals(horseDto.dateOfBirth) &&
+            Objects.equals(description, horseDto.description) &&
+            Objects.equals(favSportId, horseDto.favSportId) &&
+            Objects.equals(parent1Id, horseDto.parent1Id) &&
+            Objects.equals(parent2Id, horseDto.parent2Id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, sex, dateOfBirth, description, favSportId);
+        return Objects.hash(id, name, sex, dateOfBirth, description, favSportId, parent1Id, parent2Id);
     }
 
     private String fieldsString() {
@@ -104,7 +135,9 @@ public class HorseDto {
             ", sex=" + sex +
             ", dateOfBirth=" + dateOfBirth +
             ", description='" + description + '\'' +
-            ", favSport='" + favSportId + '\'';
+            ", favSport='" + favSportId + '\'' +
+            ", parent1Id='" + parent1Id + '\'' +
+            ", parent2Id='" + parent2Id + '\'';
     }
 
     @Override

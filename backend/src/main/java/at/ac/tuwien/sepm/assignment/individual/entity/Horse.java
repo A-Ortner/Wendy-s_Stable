@@ -13,6 +13,8 @@ public class Horse {
     private LocalDate dateOfBirth;
     private String description;
     private Long favSportId;
+    private Long parent1Id;
+    private Long parent2Id;
 
     public Horse() {
     }
@@ -32,6 +34,17 @@ public class Horse {
         this.dateOfBirth = dateOfBirth;
         this.description = description;
         this.favSportId = favSportId;
+    }
+
+    public Horse(Long id, String name, Sexes sex, LocalDate dateOfBirth, String description, Long favSportId, Long parent1Id, Long parent2Id) {
+        this.id = id;
+        this.name = name;
+        this.sex = sex;
+        this.dateOfBirth = dateOfBirth;
+        this.description = description;
+        this.favSportId = favSportId;
+        this.parent1Id = parent1Id;
+        this.parent2Id = parent2Id;
     }
 
     public Long getId() {
@@ -82,6 +95,22 @@ public class Horse {
         this.favSportId = favSportId;
     }
 
+    public Long getParent1Id() {
+        return parent1Id;
+    }
+
+    public void setParent1Id(Long parent1Id) {
+        this.parent1Id = parent1Id;
+    }
+
+    public Long getParent2Id() {
+        return parent2Id;
+    }
+
+    public void setParent2Id(Long parent2Id) {
+        this.parent2Id = parent2Id;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -92,12 +121,14 @@ public class Horse {
             sex == horse.sex &&
             dateOfBirth.equals(horse.dateOfBirth) &&
             Objects.equals(description, horse.description) &&
-            Objects.equals(favSportId, horse.favSportId);
+            Objects.equals(favSportId, horse.favSportId) &&
+            Objects.equals(parent1Id, horse.parent1Id) &&
+            Objects.equals(parent2Id, horse.parent2Id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, sex, dateOfBirth, description, favSportId);
+        return Objects.hash(id, name, sex, dateOfBirth, description, favSportId, parent1Id, parent2Id);
     }
 
     private String fieldsString() {
@@ -106,7 +137,9 @@ public class Horse {
             ", sex=" + sex +
             ", dateOfBirth=" + dateOfBirth +
             ", description='" + description + '\'' +
-            ", favSport='" + favSportId + '\'';
+            ", favSport='" + favSportId + '\'' +
+            ", parent1Id='" + parent1Id + '\'' +
+            ", parent2Id='" + parent2Id + '\'';
     }
 
     @Override

@@ -60,7 +60,7 @@ public class HorseServiceImpl implements HorseService {
 
     @Override
     public Horse updateHorse(Horse horse) throws ServiceException, NotFoundException, ValidationException {
-        LOGGER.trace("updateHorse({})", horse.toString());
+        LOGGER.info("updateHorse({})", horse.toString()); //todo: trace
 
         validator.validateNewHorse(horse);
 

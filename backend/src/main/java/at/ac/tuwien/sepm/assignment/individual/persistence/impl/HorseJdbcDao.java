@@ -41,14 +41,16 @@ public class HorseJdbcDao implements HorseDao {
 
         horse.setDateOfBirth((resultSet.getDate("dateofbirth").toLocalDate()));
         horse.setDescription(resultSet.getString("description"));
-        horse.setFavSportId(resultSet.getLong("favsportid"));
+        horse.setFavSportId((Long) resultSet.getObject("favsportid"));
+        horse.setParent1Id((Long) resultSet.getObject("parent1id"));
+        horse.setParent2Id((Long) resultSet.getObject("parent2id"));
         return horse;
     }
 
     @Override
     public Horse createHorse(Horse horse) throws PersistenceException {
         LOGGER.trace("createHorse({})", horse.toString());
-        final String sql = "INSERT INTO " + TABLE_NAME + " (name, sex, dateofbirth, description, favsportid)" + " VALUES (?,?,?,?,?);";
+        final String sql = "INSERT INTO " + TABLE_NAME + " (name, sex, dateofbirth, description, favsportid, parent1id, parent2id)" + " VALUES (?,?,?,?,?,?,?);";
         KeyHolder keyHolder = new GeneratedKeyHolder();
         try {
             jdbcTemplate.update(connection -> {
@@ -57,7 +59,9 @@ public class HorseJdbcDao implements HorseDao {
                 stmt.setString(2, horse.getSex().name());
                 stmt.setDate(3, java.sql.Date.valueOf(horse.getDateOfBirth()));
                 stmt.setString(4, horse.getDescription());
-                stmt.setLong(5, horse.getFavSportId());
+                stmt.setObject(5, horse.getFavSportId());
+                stmt.setObject(6, horse.getParent1Id());
+                stmt.setObject(7, horse.getParent2Id());
                 return stmt;
             }, keyHolder);
         } catch (Exception e) {
@@ -100,9 +104,12 @@ public class HorseJdbcDao implements HorseDao {
     @Override
     public Horse updateHorse(Horse horse) throws PersistenceException {
         LOGGER.info("Update horse with id {}", horse.getId()); //todo: make trace
+            /*if(horse.getParent1Id() == 0) horse.setParent1Id(null);
+            if(horse.getParent2Id() == 0) horse.setParent2Id(null);
+            if(horse.getFavSportId() == 0) horse.setFavSportId(null);*/
 
 
-        final String sql = "UPDATE " + TABLE_NAME + " SET" + " id=?, name= ?, sex= ?, dateofbirth= ?, description= ?, favsportid= ?" + "WHERE id=" + horse.getId().intValue() + ";";
+        final String sql = "UPDATE " + TABLE_NAME + " SET" + " id=?, name= ?, sex= ?, dateofbirth= ?, description= ?, favsportid= ?, parent1id= ?, parent2id= ?" + "WHERE id=" + horse.getId().intValue() + ";";
         KeyHolder keyHolder = new GeneratedKeyHolder();
         try {
             jdbcTemplate.update(connection -> {
@@ -112,10 +119,13 @@ public class HorseJdbcDao implements HorseDao {
                 stmt.setString(3, horse.getSex().name());
                 stmt.setDate(4, java.sql.Date.valueOf(horse.getDateOfBirth()));
                 stmt.setString(5, horse.getDescription());
-                stmt.setLong(6, horse.getFavSportId());
+                stmt.setObject(6, horse.getFavSportId());
+                stmt.setObject(7, horse.getParent1Id());
+                stmt.setObject(8, horse.getParent2Id());
                 return stmt;
             }, keyHolder);
         } catch (Exception e) {
+            e.printStackTrace();
             throw new PersistenceException("Error during updating horse: " + e.getMessage());
         }
         return horse;

@@ -8,25 +8,29 @@ import org.springframework.stereotype.Component;
 @Component
 public class HorseMapper {
 
-    public HorseDto entityToDto(Horse horse){
-        if(horse == null) return null;
+    public HorseDto entityToDto(Horse horse) {
+        if (horse == null) return null;
         return new HorseDto(horse.getId(),
             horse.getName(),
             horse.getSex(),
             horse.getDateOfBirth(),
             horse.getDescription(),
-            horse.getFavSportId());
+            horse.getFavSportId(),
+            horse.getParent1Id(),
+            horse.getParent2Id());
     }
 
-    public Horse dtoToEntity(HorseDto horseDto){
-        if(horseDto == null) return null;
-        if(horseDto.getFavSportId() == null) horseDto.setFavSportId(-1L);
+    public Horse dtoToEntity(HorseDto horseDto) {
+        if (horseDto == null) return null;
+        //if (horseDto.getFavSportId() == null) horseDto.setFavSportId(-1L);
         return new Horse(horseDto.getId(),
             horseDto.getName(),
             horseDto.getSex(),
             horseDto.getDateOfBirth(),
             horseDto.getDescription(),
-            horseDto.getFavSportId());
+            horseDto.getFavSportId(),
+            horseDto.getParent1Id(),
+            horseDto.getParent2Id());
 
     }
 }
