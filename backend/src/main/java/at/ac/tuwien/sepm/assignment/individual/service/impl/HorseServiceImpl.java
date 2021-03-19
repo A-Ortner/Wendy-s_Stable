@@ -1,6 +1,7 @@
 package at.ac.tuwien.sepm.assignment.individual.service.impl;
 
 import at.ac.tuwien.sepm.assignment.individual.entity.Horse;
+import at.ac.tuwien.sepm.assignment.individual.entity.SearchTerms;
 import at.ac.tuwien.sepm.assignment.individual.exception.NotFoundException;
 import at.ac.tuwien.sepm.assignment.individual.exception.PersistenceException;
 import at.ac.tuwien.sepm.assignment.individual.exception.ServiceException;
@@ -62,10 +63,19 @@ public class HorseServiceImpl implements HorseService {
     public Horse updateHorse(Horse horse) throws ServiceException, NotFoundException, ValidationException {
         LOGGER.info("updateHorse({})", horse.toString()); //todo: trace
 
-        validator.validateNewHorse(horse);
+        validator.validateUpdatedHorse(horse);
 
         try {
             return horseDao.updateHorse(horse);
+        } catch (PersistenceException e) {
+            throw new ServiceException(e.getMessage(), e.getCause());
+        }
+    }
+
+    @Override
+    public List<Horse> searchHorses(SearchTerms searchTerms) throws ServiceException {
+        try {
+            return horseDao.searchHorses(searchTerms);
         } catch (PersistenceException e) {
             throw new ServiceException(e.getMessage(), e.getCause());
         }

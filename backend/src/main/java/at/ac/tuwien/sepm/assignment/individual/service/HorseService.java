@@ -1,6 +1,7 @@
 package at.ac.tuwien.sepm.assignment.individual.service;
 
 import at.ac.tuwien.sepm.assignment.individual.entity.Horse;
+import at.ac.tuwien.sepm.assignment.individual.entity.SearchTerms;
 import at.ac.tuwien.sepm.assignment.individual.exception.NotFoundException;
 import at.ac.tuwien.sepm.assignment.individual.exception.ServiceException;
 import at.ac.tuwien.sepm.assignment.individual.exception.ValidationException;
@@ -36,6 +37,8 @@ public interface HorseService {
     Horse getOneById(Long id);
 
     /**
+     * updates values in db for horse with the specified id
+     *
      * @param horse which is to be updated in the database
      * @return updated Horse
      * @throws ServiceException will be thrown if something goes wrong during the data processing
@@ -43,4 +46,13 @@ public interface HorseService {
      * @throws ValidationException will be thrown if input fields are invalid during data processing
      * */
     Horse updateHorse(Horse horse) throws ServiceException, NotFoundException, ValidationException;
+
+    /**
+     * Loads all horses in the db that match each criteria
+     *
+     * @param searchTerms of which a query will be built
+     * @return List of horses that matches criteria
+     * @throws ServiceException will be thrown if something goes wrong during the data processing
+     */
+    List<Horse> searchHorses(SearchTerms searchTerms) throws ServiceException;
 }

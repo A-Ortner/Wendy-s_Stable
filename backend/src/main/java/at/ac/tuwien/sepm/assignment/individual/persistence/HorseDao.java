@@ -1,6 +1,7 @@
 package at.ac.tuwien.sepm.assignment.individual.persistence;
 
 import at.ac.tuwien.sepm.assignment.individual.entity.Horse;
+import at.ac.tuwien.sepm.assignment.individual.entity.SearchTerms;
 import at.ac.tuwien.sepm.assignment.individual.exception.NotFoundException;
 import at.ac.tuwien.sepm.assignment.individual.exception.PersistenceException;
 import at.ac.tuwien.sepm.assignment.individual.exception.ServiceException;
@@ -40,4 +41,13 @@ public interface HorseDao {
      * @throws PersistenceException will be thrown if something goes wrong during the database access
      * */
     Horse updateHorse(Horse horse) throws PersistenceException, NotFoundException;
+
+    /**
+     * Loads all horses in the db that match each criteria
+     *
+     * @param searchTerms of the db-query
+     * @return List of horses that matches criteria
+     * @throws PersistenceException will be thrown if something goes wrong during the data processing
+     */
+    List<Horse> searchHorses(SearchTerms searchTerms) throws PersistenceException;
 }

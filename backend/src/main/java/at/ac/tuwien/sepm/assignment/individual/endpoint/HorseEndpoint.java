@@ -3,6 +3,7 @@ package at.ac.tuwien.sepm.assignment.individual.endpoint;
 import at.ac.tuwien.sepm.assignment.individual.endpoint.dto.HorseDto;
 import at.ac.tuwien.sepm.assignment.individual.endpoint.mapper.HorseMapper;
 import at.ac.tuwien.sepm.assignment.individual.entity.Horse;
+import at.ac.tuwien.sepm.assignment.individual.entity.SearchTerms;
 import at.ac.tuwien.sepm.assignment.individual.exception.NotFoundException;
 import at.ac.tuwien.sepm.assignment.individual.exception.ServiceException;
 import at.ac.tuwien.sepm.assignment.individual.exception.ValidationException;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.lang.invoke.MethodHandles;
+import java.time.LocalDate;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -43,6 +45,43 @@ public class HorseEndpoint {
         }
     }
 
+    @GetMapping()
+    public List<HorseDto> getAllHorses(@RequestParam(required = false, name = "name") String name,
+                                       @RequestParam(required = false, name= "sex") String sex,
+                                       @RequestParam(required = false, name="dateOfBirth") String dateOfBirth,
+                                       @RequestParam(required = false, name = "description") String description,
+                                       @RequestParam(required = false, name = "favSportId") Long favSportId){
+        if(name != null || sex!= null ||dateOfBirth!=null || description != null || favSportId != null){
+            LOGGER.info("GET all horses " + BASE_URL + "with param "+ name + " " + sex + " " + dateOfBirth + " " + description + " " + favSportId);
+            SearchTerms st = new SearchTerms(name, dateOfBirth, sex, description,favSportId);
+
+            try {
+                List<HorseDto> horseDtos = new LinkedList<>();
+                List<Horse> horses = horseService.searchHorses(st);
+                for (Horse o : horses) {
+                    horseDtos.add(horseMapper.entityToDto(o));
+                }
+                return horseDtos;
+            } catch (ServiceException e) {
+                throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), e);
+            }
+        }else{
+            LOGGER.info("GET all horses " + BASE_URL);
+            try {
+                List<HorseDto> horseDtos = new LinkedList<>();
+                List<Horse> horses = horseService.getAllHorses();
+                for (Horse o : horses) {
+                    horseDtos.add(horseMapper.entityToDto(o));
+                }
+                return horseDtos;
+            } catch (ServiceException e) {
+                throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), e);
+            }
+        }
+
+    }
+
+
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public HorseDto createHorse(@RequestBody HorseDto horseDto){
@@ -56,21 +95,6 @@ public class HorseEndpoint {
             throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, e.getMessage());
         }catch (ServiceException e){
             //500: internal server error
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), e);
-        }
-    }
-
-    @GetMapping()
-    public List<HorseDto> getAllHorses(){
-        LOGGER.info("GET all horses " + BASE_URL);
-        try {
-            List<HorseDto> horseDtos = new LinkedList<>();
-            List<Horse> horses = horseService.getAllHorses();
-            for (Horse o : horses) {
-                horseDtos.add(horseMapper.entityToDto(o));
-            }
-            return horseDtos;
-        } catch (ServiceException e) {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), e);
         }
     }

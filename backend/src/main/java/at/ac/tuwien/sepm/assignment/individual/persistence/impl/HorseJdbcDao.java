@@ -1,6 +1,7 @@
 package at.ac.tuwien.sepm.assignment.individual.persistence.impl;
 
 import at.ac.tuwien.sepm.assignment.individual.entity.Horse;
+import at.ac.tuwien.sepm.assignment.individual.entity.SearchTerms;
 import at.ac.tuwien.sepm.assignment.individual.exception.NotFoundException;
 import at.ac.tuwien.sepm.assignment.individual.exception.PersistenceException;
 import at.ac.tuwien.sepm.assignment.individual.persistence.HorseDao;
@@ -17,6 +18,7 @@ import java.lang.invoke.MethodHandles;
 import java.sql.*;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 @Repository
 public class HorseJdbcDao implements HorseDao {
@@ -36,8 +38,8 @@ public class HorseJdbcDao implements HorseDao {
         horse.setName(resultSet.getString("name"));
 
         //todo: check if better to change from enum to string an make enum in frontend
-        if(resultSet.getString("sex").equals("M")) horse.setSex(Sexes.M);
-        else horse.setSex(Sexes.W);
+        if (resultSet.getString("sex").equals("M")) horse.setSex(Sexes.M);
+        else horse.setSex(Sexes.F);
 
         horse.setDateOfBirth((resultSet.getDate("dateofbirth").toLocalDate()));
         horse.setDescription(resultSet.getString("description"));
@@ -96,7 +98,7 @@ public class HorseJdbcDao implements HorseDao {
         final String sql = "SELECT * FROM " + TABLE_NAME + " WHERE id=?";
         List<Horse> horses = jdbcTemplate.query(sql, this::mapRow, id);
 
-        if (horses.isEmpty()) throw new NotFoundException("Could not find sport with id " + id);
+        if (horses.isEmpty()) throw new NotFoundException("Could not find horse with id " + id);
 
         return horses.get(0);
     }
@@ -129,5 +131,49 @@ public class HorseJdbcDao implements HorseDao {
             throw new PersistenceException("Error during updating horse: " + e.getMessage());
         }
         return horse;
+    }
+
+    @Override
+    public List<Horse> searchHorses(SearchTerms searchTerms) throws PersistenceException {
+        LOGGER.trace("Get horse(s) with search.");
+
+        String sql_build = "SELECT * FROM " + TABLE_NAME + " WHERE " +
+            " LOWER(name) LIKE ? AND " +
+            " ISNULL(LOWER(description), ' ') LIKE ? AND " +
+            " LOWER(sex) LIKE ?";
+
+        if (searchTerms.getFavSportId() != null) {
+            sql_build += " AND favsportid = ISNULL(?, favsportid)";
+        }
+        if (searchTerms.getDateOfBirth() != null) {
+            sql_build += " AND dateOfBirth >= ISNULL(?, dateOfBirth)";
+        }
+        sql_build += ";";
+
+
+        final String sql = sql_build;
+        AtomicInteger ai = new AtomicInteger(1);
+        try {
+            List<Horse> horses = jdbcTemplate.query(conn -> {
+                PreparedStatement pst = conn.prepareStatement(sql);
+                pst.setString(ai.getAndAdd(1), searchTerms.getName() == null ? "%" : "%" + searchTerms.getName().toLowerCase() + "%");
+                pst.setString(ai.getAndAdd(1), searchTerms.getDescription() == null ? "%" : "%" + searchTerms.getDescription().toLowerCase() + "%");
+                pst.setString(ai.getAndAdd(1), searchTerms.getSex() == null ? "%" : searchTerms.getSex().toLowerCase());
+
+                if (searchTerms.getFavSportId() != null) pst.setObject(ai.getAndAdd(1), searchTerms.getFavSportId());
+
+                if (searchTerms.getDateOfBirth() != null) pst.setObject(ai.getAndAdd(1), searchTerms.getDateOfBirth());
+                LOGGER.info(pst.toString()); //todo: remove
+                return pst;
+            }, this::mapRow);
+
+            for (Horse h : horses) {
+                LOGGER.info(h.toString());
+            }
+            return horses;
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new PersistenceException("Persistence: Failed to find horses by search: " + e.getMessage());
+        }
     }
 }

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import {Horse} from '../dto/horse';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpParams} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {environment} from 'src/environments/environment';
 
@@ -40,7 +40,7 @@ export class HorseService {
    *
    * @param id of horse to load
    */
-  getHorseById(id: number): Observable<Horse> {
+  getHorseById(id: number | string): Observable<Horse> {
     console.log('Load horse details for ' + id);
     return this.httpClient.get<Horse>(baseUri + '/' + id);
   }
@@ -51,5 +51,30 @@ export class HorseService {
   updateHorse(horse: Horse): Observable<any> {
     console.log('Update horse with id ' + horse.id);
     return this.httpClient.put<Horse>(baseUri + '/' + horse.id, horse);
+  }
+
+  searchHorses(searchHorse: Horse): Observable<Horse[]> {
+    /*let headers = new HttpHeaders();
+    headers.set('Content-Type', 'application/json');*/
+    console.log(searchHorse);
+    let params = new HttpParams();
+    if (searchHorse.name != null){
+      params = params.set('name', searchHorse.name);
+    }
+    if (searchHorse.sex != null){
+      params = params.set('sex', searchHorse.sex);
+    }
+    if (searchHorse.dateOfBirth != null){
+      params = params.set('dateOfBirth', searchHorse.dateOfBirth);
+    }
+    if (searchHorse.description != null){
+      params = params.set('description', searchHorse.description);
+    }
+    if (searchHorse.favSportId != null){
+      params = params.set('favSportId', searchHorse.favSportId.toString());
+    }
+    console.log(params.toString());
+
+    return this.httpClient.get<Horse[]>(baseUri + '/?', {params: <any>searchHorse});
   }
 }

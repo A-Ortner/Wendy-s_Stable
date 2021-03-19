@@ -1,5 +1,121 @@
 <p id="horse-main-headline">Seach for horses or add new ones here!</p>
-<button class="add-button">
+
+<!-- Trigger the modal with a button -->
+<button type="button" class="btn btn-light btn-outline-dark btn-lg" data-toggle="modal" data-target="#myModal">Open
+  search
+</button>
+
+<!-- Modal -->
+<div id="myModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Search Horses</h4>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="form-group">
+            <label for="horseName">
+              Name:
+            </label>
+            <input
+              required
+              id="horseName"
+              ngModel
+              name="name"
+              #name="ngModel"
+              type="text"
+              class="form-control"
+              placeholder="Enter name..."
+              [(ngModel)]="searchHorse.name">
+          </div>
+
+          <div class="form-group">
+            <label for="horseSex">
+              Sex:
+            </label>
+            <select
+              required
+              id="horseSex"
+              ngModel
+              name="sex"
+              #sex="ngModel"
+              class="browser-default custom-select form-control"
+              [(ngModel)]="searchHorse.sex">
+              <option selected hidden>Choose sex...</option>
+              <option value=null>none</option>
+              <option value="M">male</option>
+              <option value="F">female</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>Date of birth:</label>
+            <form class="form-inline">
+              <div class="input-group">
+                <input
+                  required
+                  type="date"
+                  class="form-control"
+                  id="dateOfBirth"
+                  [(ngModel)]="this.searchHorse.dateOfBirth"
+                  ngModel name="dp"
+                  onkeydown="return false"
+                  #dp="ngModel">
+                <button type="button" class="close" (click)="resetDate()">&times;</button>
+              </div>
+
+            </form>
+          </div>
+
+          <div class="form-group">
+            <label for="horseDescription">
+              Description:
+            </label>
+            <textarea
+              id="horseDescription"
+              name="description"
+              cols="30" rows="10"
+              class="form-control"
+              placeholder="Enter description..."
+              [(ngModel)]="searchHorse.description"></textarea>
+          </div>
+
+          <div class="form-group">
+            <label for="horseSport">
+              Favourite Sport:
+            </label>
+            <select
+              id="horseSport"
+              name="datepicker"
+              class="browser-default custom-select form-control"
+              [(ngModel)]="searchHorse.favSportId">
+              <option selected hidden>Choose sport from list...</option>
+              <option value="null">none</option>
+              <option *ngFor="let sport of sports" value={{sport.id}}>{{sport.name}}</option>
+            </select>
+          </div>
+
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal" (click)="searchHorses()">Search</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<button class="btn btn-light btn-outline-dark btn-lg" (click)="this.getAllHorses()">
+  LOAD ALL
+</button>
+
+<button class="btn btn-light btn-outline-dark btn-lg">
   <a routerLink="/add-horse">
     + ADD NEW HORSE
   </a>
@@ -12,11 +128,15 @@
     <th>Name</th>
     <th>Sex</th>
     <th>Date of Birth</th>
+    <th>Description</th>
+    <th>Favourite Sport</th>
   </tr>
   <tr *ngFor="let horse of horses"> <!--(click)="openDetails(horse)"-->
     <td>{{(horse.name).toUpperCase()}}</td>
     <td>{{horse.sex}}</td>
     <td>{{horse.dateOfBirth}}</td>
+    <td>{{horse.description}}</td>
+    <td>{{this.getSport(horse.favSportId)}}</td>
     <button class="btn btn-light btn-outline-secondary"><a routerLink="/details-horse/{{horse.id}}">
       DETAILS
     </a></button>
