@@ -5,5 +5,7 @@ export class Horse {
   dateOfBirth: string;
   description: string;
   favSportId: number;
+  parent1Id: number;
+  parent2Id: number;
 }
 
