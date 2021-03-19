@@ -72,6 +72,11 @@ public class Validator {
         }
 
         //validate parents
+        validateParentFields(horse);
+
+    }
+
+    private void validateParentFields(Horse horse) {
         if(horse.getParent1Id() != null){
             Horse parent1;
             try {
@@ -125,20 +130,29 @@ public class Validator {
 
 
         }
+    }
+
+    public void validateUpdatedHorse(Horse horse) {
+        this.validateNewHorse(horse);
+
+        //id has to be valid
+        if(horse.getId()==null){
+            LOGGER.error("Update horse: HorseId is not in the database.");
+            throw new ValidationException("Horse is not in the database. Update denied.");
+        }
 
         //horses sex cannot be changed if it is enlisted as parent
-        Horse old = horseDao.getOneById(horse.getId());
-        if(!old.getSex().equals(horse.getSex())){
-            List<Horse> horses = horseDao.getAllHorses();
-            for (Horse h : horses) {
-                if((h.getParent1Id().equals(horse.getId())) || (h.getParent2Id().equals(horse.getId()))){
-                    LOGGER.error("Horse´s is already defined as parent and sex cannot be changed.");
-                    throw new ValidationException("Horse´s sex cannot be changed if it is already enlisted as parent.");
+        if(horse.getId()!=null){
+            Horse old = horseDao.getOneById(horse.getId());
+            if(!old.getSex().equals(horse.getSex())){
+                List<Horse> horses = horseDao.getAllHorses();
+                for (Horse h : horses) {
+                    if((h.getParent1Id().equals(horse.getId())) || (h.getParent2Id().equals(horse.getId()))){
+                        LOGGER.error("Horse´s is already defined as parent and sex cannot be changed.");
+                        throw new ValidationException("Horse´s sex cannot be changed if it is already enlisted as parent.");
+                    }
                 }
             }
         }
-
-
     }
-
 }
