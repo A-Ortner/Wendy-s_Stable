@@ -40,13 +40,13 @@
       [(ngModel)]="horse.sex">
       <option selected hidden>Choose sex...</option>
       <option value="M">male</option>
-      <option value="W">female</option>
+      <option value="F">female</option>
     </select>
   </div>
   <div class="alert alert-danger" *ngIf="sex.touched && !sex.valid">Sex must be set.</div>
 
   <div class="form-group">
-    <label>Date of birth:</label>
+    <label for="dateOfBirth">Date of birth:</label>
     <form class="form-inline">
       <div class="input-group">
         <input
