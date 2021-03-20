@@ -137,6 +137,13 @@ public class Validator {
 
         //id has to be valid
         if(horse.getId()==null){
+            LOGGER.error("Update horse: HorseId is not valid.");
+            throw new ValidationException("HorseId is not valid. Update denied.");
+        }
+
+        try {
+            Horse h = horseDao.getOneById(horse.getId());
+        }catch (NotFoundException e){
             LOGGER.error("Update horse: HorseId is not in the database.");
             throw new ValidationException("Horse is not in the database. Update denied.");
         }
