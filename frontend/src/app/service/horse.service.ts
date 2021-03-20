@@ -50,9 +50,15 @@ export class HorseService {
    */
   updateHorse(horse: Horse): Observable<any> {
     console.log('Update horse with id ' + horse.id);
-    return this.httpClient.put<Horse>(baseUri + '/' + horse.id, horse);
+    return this.httpClient.put<Horse>(baseUri, horse);
   }
 
+  /**
+   * queries the DB for horses that match the fields set in searchHorse
+   *
+   * @param searchHorse bundled fields that will be used in the query
+   * @return a list of horses that match the criteria of searchHorse
+   */
   searchHorses(searchHorse: Horse): Observable<Horse[]> {
     /*let headers = new HttpHeaders();
     headers.set('Content-Type', 'application/json');*/
@@ -75,6 +81,16 @@ export class HorseService {
     }
     console.log(params.toString());
 
-    return this.httpClient.get<Horse[]>(baseUri + '/?', {params: <any>searchHorse});
+    return this.httpClient.get<Horse[]>(baseUri + '/?', {params: <any>searchHorse}); //todo: ask tutor what to use instead of <any>
+  }
+
+  /**
+   * deletes horse and all its parent-child relationships from the db
+   *
+   * @param id of the horse to be deleted
+   */
+  deleteHorse(id: number) {
+    console.log('Delete horse with id ' + id);
+    return this.httpClient.delete<any>(baseUri + '/' + id);
   }
 }

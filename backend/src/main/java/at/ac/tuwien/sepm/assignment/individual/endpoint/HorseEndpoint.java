@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.lang.invoke.MethodHandles;
-import java.time.LocalDate;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -41,7 +40,9 @@ public class HorseEndpoint {
         try {
             return horseMapper.entityToDto(horseService.getOneById(id));
         } catch (NotFoundException e) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Error during reading sport", e);
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Horse not found.", e);
+        }catch (ServiceException e){
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error during loading horse from database.");
         }
     }
 
@@ -51,6 +52,7 @@ public class HorseEndpoint {
                                        @RequestParam(required = false, name="dateOfBirth") String dateOfBirth,
                                        @RequestParam(required = false, name = "description") String description,
                                        @RequestParam(required = false, name = "favSportId") Long favSportId){
+
         if(name != null || sex!= null ||dateOfBirth!=null || description != null || favSportId != null){
             LOGGER.info("GET all horses " + BASE_URL + "with param "+ name + " " + sex + " " + dateOfBirth + " " + description + " " + favSportId);
             SearchTerms st = new SearchTerms(name, dateOfBirth, sex, description,favSportId);
@@ -65,6 +67,7 @@ public class HorseEndpoint {
             } catch (ServiceException e) {
                 throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), e);
             }
+
         }else{
             LOGGER.info("GET all horses " + BASE_URL);
             try {
@@ -99,7 +102,7 @@ public class HorseEndpoint {
         }
     }
 
-    @PutMapping(value = "/{id}")
+    @PutMapping
     @ResponseStatus(HttpStatus.OK)
     public HorseDto updateHorse(@RequestBody HorseDto horse) {
         LOGGER.info("Put " + BASE_URL + "/{}", horse.getId());
@@ -108,10 +111,23 @@ public class HorseEndpoint {
         try {
             Horse horseEntity = horseMapper.dtoToEntity(horse);
             return horseMapper.entityToDto(horseService.updateHorse(horseEntity));
-        } catch (ValidationException | ServiceException e) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Error during updating horse with name " + horse.getName()+ ": " + e.getMessage(), e);
+        }catch(ValidationException e){
+            //422: The request was well-formed but was unable to be followed due to semantic errors.
+            throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, e.getMessage());
+        }catch (ServiceException e){
+            //500: internal server error
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), e);
         }
     }
 
+    @DeleteMapping(value = "/{id}")
+    public void deleteHorse(@PathVariable("id") Long id) {
+        LOGGER.info("DELETE " + BASE_URL + "/{}", id);
+        try {
+            this.horseService.deleteHorse(id);
+        } catch (ServiceException e) {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error during deleting horse", e);
+        }
+    }
 
 }

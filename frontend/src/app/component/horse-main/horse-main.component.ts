@@ -45,6 +45,7 @@ export class HorseMainComponent implements OnInit {
       error => {
         //todo: ask if ok
         this.horses = [];
+        this.defaultServiceErrorHandling(error);
       }
     );
   }
@@ -64,6 +65,24 @@ export class HorseMainComponent implements OnInit {
     } else {
       return this.sports.filter(s => s.id = favSportId)[0].name;
     }
+  }
+
+  /**
+   * deletes horse from db and parent-child relationships
+   *
+   * @param id of the horse to be deleted
+   * @param name: name of the horse to be deleted
+   */
+  deleteHorse(id: number, name: string) {
+    this.horseService.deleteHorse(id).subscribe(() => {
+        alert('Deleted horse ' + name + '.');
+        this.getAllHorses();
+      },
+      error => {
+        alert('Could not delete horse ' + name + '.');
+        this.defaultServiceErrorHandling(error);
+      }
+    );
   }
 
   private getAllHorses() {

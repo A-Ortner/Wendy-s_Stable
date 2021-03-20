@@ -55,4 +55,11 @@ public interface HorseService {
      * @throws ServiceException will be thrown if something goes wrong during the data processing
      */
     List<Horse> searchHorses(SearchTerms searchTerms) throws ServiceException;
+
+    /**
+     * Deletes horse and its parent-child-relationships
+     * @param id of the horse to be deleted
+     * @throws ServiceException  will be thrown if something goes wrong during the data processing
+     */
+    void deleteHorse(Long id) throws ServiceException;
 }

@@ -40,7 +40,9 @@ public class SportEndpoint {
         try {
             return sportMapper.entityToDto(sportService.getOneById(id));
         } catch (NotFoundException e) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Error during reading sport", e);
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Sport is not in database", e);
+        } catch (ServiceException e){
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error during reading sport", e);
         }
     }
 
@@ -75,4 +77,5 @@ public class SportEndpoint {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), e);
         }
     }
+
 }

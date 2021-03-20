@@ -79,7 +79,7 @@ public class HorseJdbcDao implements HorseDao {
     public List<Horse> getAllHorses() {
         LOGGER.trace("getAllHorses()");
         final String sql = "SELECT * FROM " + TABLE_NAME + ";";
-        List<Horse> horses = new LinkedList<>();
+        List<Horse> horses;
         try {
             horses = jdbcTemplate.query(sql, this::mapRow);
         } catch (Exception e) {
@@ -175,5 +175,23 @@ public class HorseJdbcDao implements HorseDao {
             e.printStackTrace();
             throw new PersistenceException("Persistence: Failed to find horses by search: " + e.getMessage());
         }
+    }
+
+    @Override
+    public void deleteHorse(Long id) throws PersistenceException {
+        LOGGER.info("Delete horse with id {}", id); //todo: trace
+
+        final String sql = "DELETE FROM " + TABLE_NAME + " WHERE id = ?";
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+        try {
+            jdbcTemplate.update(connection -> {
+                PreparedStatement stmt = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+                stmt.setLong(1, id);
+                return stmt;
+            }, keyHolder);
+        } catch (Exception e) {
+            throw new PersistenceException("Deleting horse with ID " + id + "failed.");
+        }
+
     }
 }

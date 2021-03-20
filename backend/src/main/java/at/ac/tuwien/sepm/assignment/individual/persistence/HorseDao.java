@@ -50,4 +50,11 @@ public interface HorseDao {
      * @throws PersistenceException will be thrown if something goes wrong during the data processing
      */
     List<Horse> searchHorses(SearchTerms searchTerms) throws PersistenceException;
+
+    /**
+     * Deletes horse and its parent-child-relationships
+     * @param id of the horse to be deleted
+     * @throws PersistenceException will be thrown if something goes wrong during the data processing
+     */
+    void deleteHorse(Long id) throws PersistenceException;
 }
