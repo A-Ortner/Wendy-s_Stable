@@ -1,6 +1,7 @@
 package at.ac.tuwien.sepm.assignment.individual.endpoint.mapper;
 
 import at.ac.tuwien.sepm.assignment.individual.endpoint.dto.HorseDto;
+import at.ac.tuwien.sepm.assignment.individual.endpoint.dto.TreeHorseDto;
 import at.ac.tuwien.sepm.assignment.individual.entity.Horse;
 import org.springframework.stereotype.Component;
 
@@ -22,7 +23,6 @@ public class HorseMapper {
 
     public Horse dtoToEntity(HorseDto horseDto) {
         if (horseDto == null) return null;
-        //if (horseDto.getFavSportId() == null) horseDto.setFavSportId(-1L);
         return new Horse(horseDto.getId(),
             horseDto.getName(),
             horseDto.getSex(),
@@ -31,6 +31,15 @@ public class HorseMapper {
             horseDto.getFavSportId(),
             horseDto.getParent1Id(),
             horseDto.getParent2Id());
-
     }
+
+    public TreeHorseDto entityToTreeDto(Horse horse) {
+        if (horse == null) return null;
+        return new TreeHorseDto(horse.getId(),
+            horse.getName(),
+            horse.getDateOfBirth(),
+            horse.getParent1Id(),
+            horse.getParent2Id());
+    }
+
 }

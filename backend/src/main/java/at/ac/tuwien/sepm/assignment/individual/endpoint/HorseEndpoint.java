@@ -1,6 +1,7 @@
 package at.ac.tuwien.sepm.assignment.individual.endpoint;
 
 import at.ac.tuwien.sepm.assignment.individual.endpoint.dto.HorseDto;
+import at.ac.tuwien.sepm.assignment.individual.endpoint.dto.TreeHorseDto;
 import at.ac.tuwien.sepm.assignment.individual.endpoint.mapper.HorseMapper;
 import at.ac.tuwien.sepm.assignment.individual.entity.Horse;
 import at.ac.tuwien.sepm.assignment.individual.entity.SearchTerms;
@@ -41,21 +42,22 @@ public class HorseEndpoint {
             return horseMapper.entityToDto(horseService.getOneById(id));
         } catch (NotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Horse not found.", e);
-        }catch (ServiceException e){
+        } catch (ServiceException e) {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error during loading horse from database.");
         }
     }
 
+    //todo: make extra dto
     @GetMapping()
     public List<HorseDto> getAllHorses(@RequestParam(required = false, name = "name") String name,
-                                       @RequestParam(required = false, name= "sex") String sex,
-                                       @RequestParam(required = false, name="dateOfBirth") String dateOfBirth,
+                                       @RequestParam(required = false, name = "sex") String sex,
+                                       @RequestParam(required = false, name = "dateOfBirth") String dateOfBirth,
                                        @RequestParam(required = false, name = "description") String description,
-                                       @RequestParam(required = false, name = "favSportId") Long favSportId){
+                                       @RequestParam(required = false, name = "favSportId") Long favSportId) {
 
-        if(name != null || sex!= null ||dateOfBirth!=null || description != null || favSportId != null){
-            LOGGER.info("GET all horses " + BASE_URL + "with param "+ name + " " + sex + " " + dateOfBirth + " " + description + " " + favSportId);
-            SearchTerms st = new SearchTerms(name, dateOfBirth, sex, description,favSportId);
+        if (name != null || sex != null || dateOfBirth != null || description != null || favSportId != null) {
+            LOGGER.info("GET all horses " + BASE_URL + "with param " + name + " " + sex + " " + dateOfBirth + " " + description + " " + favSportId);
+            SearchTerms st = new SearchTerms(name, dateOfBirth, sex, description, favSportId);
 
             try {
                 List<HorseDto> horseDtos = new LinkedList<>();
@@ -68,7 +70,7 @@ public class HorseEndpoint {
                 throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), e);
             }
 
-        }else{
+        } else {
             LOGGER.info("GET all horses " + BASE_URL);
             try {
                 List<HorseDto> horseDtos = new LinkedList<>();
@@ -84,19 +86,37 @@ public class HorseEndpoint {
 
     }
 
+    @GetMapping(value = "/bloodline")
+    @ResponseStatus(HttpStatus.OK)
+    public List<TreeHorseDto> getAllTreeHorses() {
+        LOGGER.info("GET all TreeHorses " + BASE_URL + "/bloodline");
+        try {
+            List<TreeHorseDto> treeHorseDtos = new LinkedList<>();
+            List<Horse> horses = horseService.getAllHorses();
+            for (Horse o : horses) {
+                treeHorseDtos.add(horseMapper.entityToTreeDto(o));
+            }
+            return treeHorseDtos;
+        } catch (NotFoundException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Horse not found.", e);
+        } catch (ServiceException e) {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), e);
+        }
+    }
+
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public HorseDto createHorse(@RequestBody HorseDto horseDto){
+    public HorseDto createHorse(@RequestBody HorseDto horseDto) {
         LOGGER.info("Post " + BASE_URL);
         LOGGER.info(horseDto.toString()); //todo: change to .debug later
         try {
             Horse HorseToBeCreated = horseMapper.dtoToEntity(horseDto);
             return horseMapper.entityToDto(horseService.createHorse(HorseToBeCreated));
-        }catch(ValidationException e){
+        } catch (ValidationException e) {
             //422: The request was well-formed but was unable to be followed due to semantic errors.
             throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, e.getMessage());
-        }catch (ServiceException e){
+        } catch (ServiceException e) {
             //500: internal server error
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), e);
         }
@@ -111,10 +131,10 @@ public class HorseEndpoint {
         try {
             Horse horseEntity = horseMapper.dtoToEntity(horse);
             return horseMapper.entityToDto(horseService.updateHorse(horseEntity));
-        }catch(ValidationException e){
+        } catch (ValidationException e) {
             //422: The request was well-formed but was unable to be followed due to semantic errors.
             throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, e.getMessage());
-        }catch (ServiceException e){
+        } catch (ServiceException e) {
             //500: internal server error
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), e);
         }

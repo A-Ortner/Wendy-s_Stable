@@ -25,6 +25,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { HorseDetailsComponent } from './component/horse-details/horse-details.component';
 import { HorseEditComponent } from './component/horse-edit/horse-edit.component';
 import { SportAddComponent } from './component/sport-add/sport-add.component';
+import { BloodlineComponent } from './component/bloodline/bloodline.component';
 
 @NgModule({
   declarations: [
@@ -37,6 +38,7 @@ import { SportAddComponent } from './component/sport-add/sport-add.component';
     HorseDetailsComponent,
     HorseEditComponent,
     SportAddComponent,
+    BloodlineComponent,
   ],
   imports: [
     BrowserModule,

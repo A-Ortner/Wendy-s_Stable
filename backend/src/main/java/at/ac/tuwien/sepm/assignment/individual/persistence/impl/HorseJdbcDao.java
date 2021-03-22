@@ -16,7 +16,6 @@ import org.springframework.stereotype.Repository;
 
 import java.lang.invoke.MethodHandles;
 import java.sql.*;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -48,6 +47,16 @@ public class HorseJdbcDao implements HorseDao {
         horse.setParent2Id((Long) resultSet.getObject("parent2id"));
         return horse;
     }
+
+ /*   private Horse mapRowTree(ResultSet resultSet, int i) throws SQLException {
+        final Horse horse = new Horse();
+        horse.setId(resultSet.getLong("id"));
+        horse.setName(resultSet.getString("name"));
+        horse.setDateOfBirth((resultSet.getDate("dateofbirth").toLocalDate()));
+        horse.setParent1Id((Long) resultSet.getObject("parent1id"));
+        horse.setParent2Id((Long) resultSet.getObject("parent2id"));
+        return horse;
+    }*/
 
     @Override
     public Horse createHorse(Horse horse) throws PersistenceException {
@@ -194,4 +203,26 @@ public class HorseJdbcDao implements HorseDao {
         }
 
     }
+
+/*    @Override
+    public List<Horse> getAllAncestors(Long id) throws PersistenceException {
+        LOGGER.trace("getAllAncestors({})", id);
+
+        final String sql = "WITH RECURSIVE horse( id, name, dateofbirth, parent1id, parent2id) AS (" +
+            "  SELECT id, name, dateofbirth, parent1id, parent2id" +
+            "  FROM horse" +
+            "  WHERE id= ?" +
+            "UNION" +
+            "  SELECT h2.id, h2.name, h2.dateofbirth, h2.parent1id, h2.parent2id" +
+            "  FROM horse h2, horse" +
+            "  WHERE horse.parent1id= h2.id OR horse.parent2id = h2.id" +
+            ")" +
+            "SELECT  id, name, dateofbirth, parent1id, parent2id FROM horse;";
+
+        List<Horse> horses = jdbcTemplate.query(sql, this::mapRowTree, id);
+
+        if (horses.isEmpty()) throw new NotFoundException("Could not find horse with id " + id);
+
+        return horses;
+    }*/
 }

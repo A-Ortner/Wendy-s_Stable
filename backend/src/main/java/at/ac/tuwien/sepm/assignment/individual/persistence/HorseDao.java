@@ -57,4 +57,12 @@ public interface HorseDao {
      * @throws PersistenceException will be thrown if something goes wrong during the data processing
      */
     void deleteHorse(Long id) throws PersistenceException;
+
+    /**
+     * Loads the horse with the corresponding id and all its ancestors
+     * @param id horse that will be the root
+     * @return List of ancestors and root
+     * @throws PersistenceException will be thrown if something goes wrong during the data processing
+     */
+/*    List<Horse> getAllAncestors(Long id) throws PersistenceException;*/
 }

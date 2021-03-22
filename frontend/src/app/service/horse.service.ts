@@ -3,6 +3,7 @@ import {Horse} from '../dto/horse';
 import {HttpClient, HttpParams} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {environment} from 'src/environments/environment';
+import {TreeHorse} from '../dto/TreeHorse';
 
 
 const baseUri = environment.backendUrl + '/horses';
@@ -33,6 +34,16 @@ export class HorseService {
   getAllHorses(): Observable<Horse[]> {
     console.log('Load all horses ' + baseUri);
     return this.httpClient.get<Horse[]>(baseUri);
+  }
+
+  /**
+   * Fetches all horses from the db and loads their fields id, name, dateOfbirth, parent1Id, parent2Id
+   *
+   * @return list of all horses in TreeHorse format
+   */
+  getAllTreeHorses(): Observable<TreeHorse[]> {
+    console.log('Load all horses for tree ' + baseUri + '/bloodline');
+    return this.httpClient.get<TreeHorse[]>(baseUri + '/bloodline');
   }
 
   /**

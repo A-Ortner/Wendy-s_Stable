@@ -56,6 +56,7 @@ public class HorseServiceImpl implements HorseService {
     @Override
     public Horse getOneById(Long id) {
         LOGGER.trace("getOneById({})", id);
+        validator.validateId(id);
         return horseDao.getOneById(id);
     }
 
@@ -100,6 +101,13 @@ public class HorseServiceImpl implements HorseService {
             throw new ServiceException(e.getMessage(), e.getCause());
         }
     }
+
+   /* @Override
+    public List<Horse> getAllAncestors(Long id) throws ServiceException, NotFoundException, ValidationException {
+        LOGGER.trace("getAllAncestors({})", id);
+        validator.validateId(id);
+        return horseDao.getAllAncestors(id);
+    }*/
 
     private void deleteParentChildRelations(Long id) {
         List<Horse> horses;

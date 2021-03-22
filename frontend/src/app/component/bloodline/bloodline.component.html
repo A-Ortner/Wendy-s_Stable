@@ -1,0 +1,51 @@
+<div *ngIf="error" class="alert alert-danger alert-dismissible fade show" role="alert">
+  <strong>Error! </strong> {{ errorMessage }}
+  <button type="button" (click)="vanishError()" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<br>
+<button class="btn btn-secondary" (click)="goBack()"> BACK</button>
+<br><br>
+<p>Choose a horse checkout its bloodline!</p>
+<br>
+
+
+<div class="form-group">
+  <label for="roothorse">
+    Bloodline for horse:
+  </label>
+  <select
+    required
+    id="roothorse"
+    ngModel name="hP1"
+    #bl="ngModel"
+    class="browser-default custom-select form-control"
+    [(ngModel)]="this.rootId">
+    <option value="null">none</option>
+    <option *ngFor="let horse of horses" value={{horse.id}}>{{horse.name}} {{horse.dateOfBirth}}</option>
+  </select>
+</div>
+<div class="alert alert-danger" *ngIf="bl.touched && !bl.valid">Horse must be set.</div>
+
+<div class="form-group">
+  <label for="generations">
+    Number of max. generations shown:
+  </label>
+  <input
+    required
+    datatype="number"
+    id="generations"
+    ngModel
+    name="gen"
+    #gen = "ngModel"
+    type="text"
+    class="form-control"
+    [(ngModel)]="generations">
+</div>
+<div class="alert alert-danger" *ngIf="gen.touched && !this.isNumber()">Input must be a number.</div>
+<br>
+<button class="btn btn-primary" (click)="loadTree(rootId)"> Load Bloodline </button>
+<br><br>
+
+<div id="tree-container"></div>

@@ -62,4 +62,14 @@ public interface HorseService {
      * @throws ServiceException  will be thrown if something goes wrong during the data processing
      */
     void deleteHorse(Long id) throws ServiceException;
+
+/*    *//**
+     * Loads the horse with the corresponding id and all its ancestors
+     * @param id horse that will be the root
+     * @return List of ancestors and root
+     * @throws ServiceException will be thrown if something goes wrong during the data processing
+     * @throws NotFoundException if the sport could not be found in the system.
+     * @throws ValidationException will be thrown if input fields are invalid during data processing
+     *//*
+    List<Horse> getAllAncestors(Long id) throws ServiceException, NotFoundException, ValidationException;*/
 }

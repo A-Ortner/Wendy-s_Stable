@@ -162,4 +162,13 @@ public class Validator {
             }
         }
     }
+
+    public void validateId(Long id) {
+        try {
+            Horse h = horseDao.getOneById(id);
+        }catch (NotFoundException e){
+            LOGGER.error("root horse: HorseId is not in the database.");
+            throw new ValidationException("Root horse is not in the database.");
+        }
+    }
 }
