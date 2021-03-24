@@ -44,6 +44,8 @@ public class HorseEndpoint {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Horse not found.", e);
         } catch (ServiceException e) {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error during loading horse from database.");
+        } catch (ValidationException e) {
+            throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, "Error during validating request: " + e.getMessage());
         }
     }
 
@@ -68,6 +70,8 @@ public class HorseEndpoint {
                 return horseDtos;
             } catch (ServiceException e) {
                 throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), e);
+            } catch (ValidationException e) {
+                throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, "Error during validating request: " + e.getMessage());
             }
 
         } else {
@@ -111,7 +115,7 @@ public class HorseEndpoint {
         LOGGER.info("GET all ancestors " + BASE_URL + "/ancestors/" + id);
         try {
             List<TreeHorseDto> treeHorseDtos = new LinkedList<>();
-            List<Horse> horses = horseService.getAllAncestors(id,generations);
+            List<Horse> horses = horseService.getAllAncestors(id, generations);
             for (Horse o : horses) {
                 treeHorseDtos.add(horseMapper.entityToTreeDto(o));
             }
@@ -120,6 +124,8 @@ public class HorseEndpoint {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Horse not found.", e);
         } catch (ServiceException e) {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), e);
+        } catch (ValidationException e) {
+            throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, "Error during validating request: " + e.getMessage());
         }
     }
 
@@ -166,6 +172,8 @@ public class HorseEndpoint {
             this.horseService.deleteHorse(id);
         } catch (ServiceException e) {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error during deleting horse", e);
+        } catch (ValidationException e) {
+            throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, "Error during validating request: " + e.getMessage());
         }
     }
 
