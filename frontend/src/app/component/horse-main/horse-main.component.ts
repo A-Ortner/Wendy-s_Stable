@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {Horse} from '../../dto/horse';
 import {HorseService} from '../../service/horse.service';
 import {Sport} from '../../dto/sport';
+import {SearchTerms} from '../../dto/SearchTerms';
 import {SportService} from '../../service/sport.service';
 
 @Component({
@@ -14,7 +15,8 @@ export class HorseMainComponent implements OnInit {
   error = false;
   errorMessage = '';
   horses: Horse[];
-  searchHorse: Horse;
+  //searchHorse: Horse;
+  searchTerms: SearchTerms;
   sports: Sport[];
 
   constructor(private horseService: HorseService,
@@ -22,7 +24,8 @@ export class HorseMainComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.searchHorse = new Horse();
+    //this.searchHorse = new Horse();
+    this.searchTerms = new SearchTerms();
     this.getAllHorses();
     this.getAllSports();
   }
@@ -38,7 +41,7 @@ export class HorseMainComponent implements OnInit {
    * loads all horses from the backend that match the fields set in searchHorse
    */
   searchHorses() {
-    this.horseService.searchHorses(this.searchHorse).subscribe(
+    this.horseService.searchHorses(this.searchTerms).subscribe(
       (horses: Horse[]) => {
         this.horses = horses;
       },
@@ -51,7 +54,7 @@ export class HorseMainComponent implements OnInit {
   }
 
   resetDate() {
-    this.searchHorse.dateOfBirth = null;
+    this.searchTerms.dateOfBirth = null;
   }
 
   /**

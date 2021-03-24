@@ -1,10 +1,13 @@
 package at.ac.tuwien.sepm.assignment.individual.entity;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
 public class SearchTerms {
     String name;
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     LocalDate dateOfBirth;
     String sex;
     String description;

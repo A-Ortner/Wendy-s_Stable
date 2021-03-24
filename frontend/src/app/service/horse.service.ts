@@ -4,6 +4,7 @@ import {HttpClient, HttpParams} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {environment} from 'src/environments/environment';
 import {TreeHorse} from '../dto/TreeHorse';
+import {SearchTerms} from '../dto/SearchTerms';
 
 
 const baseUri = environment.backendUrl + '/horses';
@@ -70,29 +71,27 @@ export class HorseService {
    * @param searchHorse bundled fields that will be used in the query
    * @return a list of horses that match the criteria of searchHorse
    */
-  searchHorses(searchHorse: Horse): Observable<Horse[]> {
-    /*let headers = new HttpHeaders();
-    headers.set('Content-Type', 'application/json');*/
-    console.log(searchHorse);
+  searchHorses(searchTerms: SearchTerms): Observable<Horse[]> {
+    console.log(searchTerms);
     let params = new HttpParams();
-    if (searchHorse.name != null){
-      params = params.set('name', searchHorse.name);
+    if (searchTerms.name != null){
+      params = params.set('name', searchTerms.name);
     }
-    if (searchHorse.sex != null){
-      params = params.set('sex', searchHorse.sex);
+    if (searchTerms.sex != null){
+      params = params.set('sex', searchTerms.sex);
     }
-    if (searchHorse.dateOfBirth != null){
-      params = params.set('dateOfBirth', searchHorse.dateOfBirth);
+    if (searchTerms.dateOfBirth != null){
+      params = params.set('dateOfBirth', searchTerms.dateOfBirth);
     }
-    if (searchHorse.description != null){
-      params = params.set('description', searchHorse.description);
+    if (searchTerms.description != null){
+      params = params.set('description', searchTerms.description);
     }
-    if (searchHorse.favSportId != null){
-      params = params.set('favSportId', searchHorse.favSportId.toString());
+    if (searchTerms.favSportId != null){
+      params = params.set('favSportId', searchTerms.favSportId.toString());
     }
     console.log(params.toString());
 
-    return this.httpClient.get<Horse[]>(baseUri + '/?', {params: <any>searchHorse}); //todo: ask tutor what to use instead of <any>
+    return this.httpClient.get<Horse[]>(baseUri + '/?', {params: <any>searchTerms}); //todo: ask tutor what to use instead of <any>
   }
 
   /**

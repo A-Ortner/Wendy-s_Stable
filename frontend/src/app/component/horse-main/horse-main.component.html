@@ -1,7 +1,8 @@
+<br>
 <p id="horse-main-headline">Seach for horses or add new ones here!</p>
 
 <!-- Trigger the modal with a button -->
-<button type="button" class="btn btn-light btn-outline-dark btn-lg" data-toggle="modal" data-target="#myModal">Open
+<button style="margin: 5px" type="button" class="btn btn-light btn-outline-dark btn-lg" data-toggle="modal" data-target="#myModal">Open
   search
 </button>
 
@@ -31,7 +32,7 @@
               type="text"
               class="form-control"
               placeholder="Enter name..."
-              [(ngModel)]="searchHorse.name">
+              [(ngModel)]="searchTerms.name">
           </div>
 
           <div class="form-group">
@@ -45,7 +46,7 @@
               name="sex"
               #sex="ngModel"
               class="browser-default custom-select form-control"
-              [(ngModel)]="searchHorse.sex">
+              [(ngModel)]="searchTerms.sex">
               <option selected hidden>Choose sex...</option>
               <option value=null>none</option>
               <option value="M">male</option>
@@ -62,7 +63,7 @@
                   type="date"
                   class="form-control"
                   id="dateOfBirth"
-                  [(ngModel)]="this.searchHorse.dateOfBirth"
+                  [(ngModel)]="this.searchTerms.dateOfBirth"
                   ngModel name="dp"
                   onkeydown="return false"
                   #dp="ngModel">
@@ -82,7 +83,7 @@
               cols="30" rows="10"
               class="form-control"
               placeholder="Enter description..."
-              [(ngModel)]="searchHorse.description"></textarea>
+              [(ngModel)]="searchTerms.description"></textarea>
           </div>
 
           <div class="form-group">
@@ -93,7 +94,7 @@
               id="horseSport"
               name="datepicker"
               class="browser-default custom-select form-control"
-              [(ngModel)]="searchHorse.favSportId">
+              [(ngModel)]="searchTerms.favSportId">
               <option selected hidden>Choose sport from list...</option>
               <option value="null">none</option>
               <option *ngFor="let sport of sports" value={{sport.id}}>{{sport.name}}</option>
@@ -111,11 +112,11 @@
   </div>
 </div>
 
-<button class="btn btn-light btn-outline-dark btn-lg" (click)="this.getAllHorses()">
+<button style="margin: 5px" type="button" class="btn btn-light btn-outline-dark btn-lg" (click)="this.getAllHorses()">
   LOAD ALL
 </button>
 
-<button class="btn btn-light btn-outline-dark btn-lg">
+<button style="margin: 5px" type="button" class="btn btn-light btn-outline-dark btn-lg">
   <a routerLink="/add-horse">
     + ADD NEW HORSE
   </a>
@@ -137,15 +138,15 @@
     <td>{{horse.dateOfBirth}}</td>
     <td>{{horse.description}}</td>
     <td>{{this.getSport(horse.favSportId)}}</td>
-    <button class="btn btn-light btn-outline-secondary"><a routerLink="/details-horse/{{horse.id}}">
+    <button style="margin: 5px" type="button" class="btn btn-light btn-outline-secondary"><a routerLink="/details-horse/{{horse.id}}">
       DETAILS
     </a></button>
-    <button class="btn btn-outline-secondary">
+    <button style="margin: 5px" type="button" class="btn btn-outline-secondary">
       <a routerLink="/edit-horse/{{horse.id}}">
         EDIT
       </a>
     </button>
-    <button class="btn btn-outline-secondary" (click)="deleteHorse(horse.id, horse.name)"> DELETE</button>
+    <button style="margin: 5px" type="button" class="btn btn-outline-secondary" (click)="deleteHorse(horse.id, horse.name)"> DELETE</button>
   </tr>
 
 </table>
