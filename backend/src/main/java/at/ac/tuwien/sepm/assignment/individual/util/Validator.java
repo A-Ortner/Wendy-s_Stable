@@ -40,6 +40,11 @@ public class Validator {
             throw new ValidationException("name is not set.");
         }
 
+        if(horse.getName().length() > 255){
+            LOGGER.error("Horse´s name is too long: " + horse.getId());
+            throw new ValidationException("name length must not exceed 255 char.");
+        }
+
         if(horse.getSex() == null){
             LOGGER.error("Horse´s sex is null for horse with id " + horse.getId());
             throw new ValidationException("sex is not set.");
