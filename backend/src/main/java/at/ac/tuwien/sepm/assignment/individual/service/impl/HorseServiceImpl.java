@@ -102,12 +102,12 @@ public class HorseServiceImpl implements HorseService {
         }
     }
 
-   /* @Override
-    public List<Horse> getAllAncestors(Long id) throws ServiceException, NotFoundException, ValidationException {
+   @Override
+    public List<Horse> getAllAncestors(Long id, Long generations) throws ServiceException, NotFoundException, ValidationException {
         LOGGER.trace("getAllAncestors({})", id);
         validator.validateId(id);
-        return horseDao.getAllAncestors(id);
-    }*/
+        return horseDao.getAllAncestors(id, generations);
+    }
 
     private void deleteParentChildRelations(Long id) {
         List<Horse> horses;

@@ -61,8 +61,9 @@ public interface HorseDao {
     /**
      * Loads the horse with the corresponding id and all its ancestors
      * @param id horse that will be the root
+     * @param generations number of generations that will be returned
      * @return List of ancestors and root
      * @throws PersistenceException will be thrown if something goes wrong during the data processing
      */
-/*    List<Horse> getAllAncestors(Long id) throws PersistenceException;*/
+    List<Horse> getAllAncestors(Long id, Long generations) throws PersistenceException;
 }

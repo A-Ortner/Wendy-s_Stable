@@ -3,8 +3,6 @@ import {Horse} from '../../dto/horse';
 import {Location} from '@angular/common';
 import {TreeHorse} from '../../dto/TreeHorse';
 import {HorseService} from '../../service/horse.service';
-import {Observable} from 'rxjs';
-
 
 
 @Component({
@@ -17,10 +15,12 @@ export class BloodlineComponent implements OnInit {
   error = false;
   errorMessage = '';
   horses: TreeHorse[];
-  horses$: Observable<TreeHorse[]>;
-  horse$: Observable<TreeHorse>;
-  rootId: number;
-  generations: number;
+  ancestors: TreeHorse[];
+
+  rootId: string;
+  rid: number;
+  generations: string;
+  genNum: number;
 
   constructor(private location: Location,
               private horseService: HorseService) {
@@ -48,23 +48,40 @@ export class BloodlineComponent implements OnInit {
    * checks if the string set in generations is a number
    */
   isNumber(): boolean {
-    console.log(this.generations);
-    if(this.generations === null) {return false;}
+    console.log(!isNaN(Number(this.generations)));
+    if (this.generations === null) {
+      return false;
+    }
     return !isNaN(Number(this.generations));
 
   }
 
 
-  loadTree(rootId: number) {
-    console.log(rootId);
-    const rootHorse = this.horses.filter((item) => this.horses.map((horse) => horse.id === rootId))[0];
-    console.log(rootHorse);
-    const horsesDecimated = this.horses.filter((item) => this.horses.map((horse) => horse.id !== rootId));
-    this.createFieldsRec(rootHorse, 0, horsesDecimated);
+  loadTree() {
+    //Reset tree
+    const tree = document.getElementById('tree-container');
+    while (tree.firstChild) {
+      tree.removeChild(tree.firstChild);
+    }
 
-   /* this.horse$.pipe (
-      map(items =>
-        items.filter(item => item.name.toLowerCase().indexOf(query) > -1)) );*/
+    //do nothing if fields not set
+    if (this.rootId == null || !this.isNumber()) {
+      return;
+    }
+
+    //save id of root horse and #generations
+    this.rid = Number(this.rootId);
+    this.genNum = Number(this.generations);
+
+    //load ancestors of roothorse
+    this.horseService.getBloodline(this.rid, this.genNum).subscribe((horses: TreeHorse[]) => {
+        this.ancestors = horses;
+        const rootHorse = this.ancestors.find(x => x.id === this.rid);
+        const horsesDecimated = this.ancestors.filter(x => x.id !== this.rid);
+
+        this.createFieldsRec(rootHorse, 0, horsesDecimated);
+      }
+    );
   }
 
 
@@ -86,7 +103,6 @@ export class BloodlineComponent implements OnInit {
     this.horseService.getAllTreeHorses().subscribe(
       (horses: Horse[]) => {
         this.horses = horses;
-        console.log(this.horses);
       },
       error => {
         this.defaultServiceErrorHandling(error);
@@ -95,29 +111,35 @@ export class BloodlineComponent implements OnInit {
   }
 
   private createFieldsRec(currHorse: TreeHorse, level: number, horses: TreeHorse[]) {
-    console.log('level ' + level);
-    console.log('horse ' + currHorse.name);
+
     const tree = document.getElementById('tree-container');
     const element = document.createElement('div');
-    element.textContent= currHorse.name + ' ' + currHorse.dateOfBirth.toString() + ' ' + level;
+    element.textContent = currHorse.name + ' ' + currHorse.dateOfBirth.toString();
+    const offset = level * 50;
+    element.style.marginLeft = offset.toString() + 'px';
+    element.className = 'form-control';
+    element.id = currHorse.id.toString();
+
+
+    //make children expandable
+    /*if (level === 0) {
+      element.hidden = false;
+    } else {
+      element.hidden = true;
+    }
+    element.onclick(this.expandChildren(element.id));*/
     tree.appendChild(element);
 
-    const horsesDecimated = horses.filter((item) => horses.map((horse) => horse.id !== currHorse.id));
-    const parent1 = horses.filter((item) => horses.map((horse) => horse.id === currHorse.parent1Id));
-    console.log('horses decimated: ' + horsesDecimated);
-    console.log('parent1');
-    console.log(parent1[0]);
+    const horsesDecimated = horses.filter(x => x.id !== this.rid);
 
-
-    if(parent1.length === 1){
-      this.createFieldsRec(parent1[0], level+1, horsesDecimated);
+    if (currHorse.parent1Id !== null) {
+      const parent1 = horses.find(x => x.id === currHorse.parent1Id);
+      this.createFieldsRec(parent1, level + 1, horsesDecimated);
     }
 
-    const parent2 = this.horses.filter((item) => this.horses.map((horse) => horse.id === currHorse.parent2Id));
-    console.log('parent2 ');
-    console.log(parent2[0]);
-    if(parent2.length === 1){
-      this.createFieldsRec(parent2[0], level+1, horsesDecimated);
+    if (currHorse.parent2Id !== null) {
+      const parent2 = horses.find(x => x.id === currHorse.parent2Id);
+      this.createFieldsRec(parent2, level + 1, horsesDecimated);
     }
   }
 }

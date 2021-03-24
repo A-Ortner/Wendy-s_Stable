@@ -22,7 +22,6 @@
     #bl="ngModel"
     class="browser-default custom-select form-control"
     [(ngModel)]="this.rootId">
-    <option value="null">none</option>
     <option *ngFor="let horse of horses" value={{horse.id}}>{{horse.name}} {{horse.dateOfBirth}}</option>
   </select>
 </div>
@@ -43,9 +42,9 @@
     class="form-control"
     [(ngModel)]="generations">
 </div>
-<div class="alert alert-danger" *ngIf="gen.touched && !this.isNumber()">Input must be a number.</div>
+<div class="alert alert-danger" *ngIf="gen.touched && (!this.isNumber() || !gen.valid)">Input must be a number.</div>
 <br>
-<button class="btn btn-primary" (click)="loadTree(rootId)"> Load Bloodline </button>
+<button class="btn btn-primary" (click)="loadTree()"> Load Bloodline </button>
 <br><br>
 
-<div id="tree-container"></div>
+<div id="tree-container" class = "form-group"></div>

@@ -48,7 +48,7 @@ public class HorseJdbcDao implements HorseDao {
         return horse;
     }
 
- /*   private Horse mapRowTree(ResultSet resultSet, int i) throws SQLException {
+    private Horse mapRowTree(ResultSet resultSet, int i) throws SQLException {
         final Horse horse = new Horse();
         horse.setId(resultSet.getLong("id"));
         horse.setName(resultSet.getString("name"));
@@ -56,7 +56,7 @@ public class HorseJdbcDao implements HorseDao {
         horse.setParent1Id((Long) resultSet.getObject("parent1id"));
         horse.setParent2Id((Long) resultSet.getObject("parent2id"));
         return horse;
-    }*/
+    }
 
     @Override
     public Horse createHorse(Horse horse) throws PersistenceException {
@@ -115,10 +115,6 @@ public class HorseJdbcDao implements HorseDao {
     @Override
     public Horse updateHorse(Horse horse) throws PersistenceException {
         LOGGER.info("Update horse with id {}", horse.getId()); //todo: make trace
-            /*if(horse.getParent1Id() == 0) horse.setParent1Id(null);
-            if(horse.getParent2Id() == 0) horse.setParent2Id(null);
-            if(horse.getFavSportId() == 0) horse.setFavSportId(null);*/
-
 
         final String sql = "UPDATE " + TABLE_NAME + " SET" + " id=?, name= ?, sex= ?, dateofbirth= ?, description= ?, favsportid= ?, parent1id= ?, parent2id= ?" + "WHERE id=" + horse.getId().intValue() + ";";
         KeyHolder keyHolder = new GeneratedKeyHolder();
@@ -204,25 +200,25 @@ public class HorseJdbcDao implements HorseDao {
 
     }
 
-/*    @Override
-    public List<Horse> getAllAncestors(Long id) throws PersistenceException {
+    @Override
+    public List<Horse> getAllAncestors(Long id, Long generations) throws PersistenceException {
         LOGGER.trace("getAllAncestors({})", id);
 
-        final String sql = "WITH RECURSIVE horse( id, name, dateofbirth, parent1id, parent2id) AS (" +
-            "  SELECT id, name, dateofbirth, parent1id, parent2id" +
+        final String sql = "WITH RECURSIVE h(depth, id, name, dateofbirth, parent1id, parent2id) AS (" +
+            "  SELECT 1, id, name, dateofbirth, parent1id, parent2id" +
             "  FROM horse" +
             "  WHERE id= ?" +
             "UNION" +
-            "  SELECT h2.id, h2.name, h2.dateofbirth, h2.parent1id, h2.parent2id" +
-            "  FROM horse h2, horse" +
-            "  WHERE horse.parent1id= h2.id OR horse.parent2id = h2.id" +
+            "  SELECT  depth+1, h2.id, h2.name, h2.dateofbirth, h2.parent1id, h2.parent2id" +
+            "  FROM h INNER JOIN horse h2 ON h2.id=h.parent1Id OR h2.id=h.parent2Id" +
+            "  where depth< ?" +
             ")" +
-            "SELECT  id, name, dateofbirth, parent1id, parent2id FROM horse;";
+            "SELECT id, name, dateofbirth, parent1id, parent2id FROM h;";
 
-        List<Horse> horses = jdbcTemplate.query(sql, this::mapRowTree, id);
+        List<Horse> horses = jdbcTemplate.query(sql, this::mapRowTree, id, generations);
 
         if (horses.isEmpty()) throw new NotFoundException("Could not find horse with id " + id);
 
         return horses;
-    }*/
+    }
 }

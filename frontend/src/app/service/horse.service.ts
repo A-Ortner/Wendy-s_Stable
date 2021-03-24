@@ -42,8 +42,8 @@ export class HorseService {
    * @return list of all horses in TreeHorse format
    */
   getAllTreeHorses(): Observable<TreeHorse[]> {
-    console.log('Load all horses for tree ' + baseUri + '/bloodline');
-    return this.httpClient.get<TreeHorse[]>(baseUri + '/bloodline');
+    console.log('Load all horses for tree ' + baseUri + '/treehorses');
+    return this.httpClient.get<TreeHorse[]>(baseUri + '/treehorses');
   }
 
   /**
@@ -103,5 +103,18 @@ export class HorseService {
   deleteHorse(id: number) {
     console.log('Delete horse with id ' + id);
     return this.httpClient.delete<any>(baseUri + '/' + id);
+  }
+
+  /**
+   * loads all ancestors and the root horse as TreeHorseDto
+   *
+   * @param rootId id of the root horse
+   * @param generations number of generation loaded
+   * @generations number of generations loaded
+   * @return list of ancestors (incl. root horse) of root horse
+   */
+  getBloodline(rootId: number, generations: number): Observable<TreeHorse[]> {
+    console.log('Load all ancestors for horse ' + baseUri + '/ancestors/' + rootId);
+    return this.httpClient.get<TreeHorse[]>(baseUri + '/ancestors/' + rootId + '/' + generations);
   }
 }

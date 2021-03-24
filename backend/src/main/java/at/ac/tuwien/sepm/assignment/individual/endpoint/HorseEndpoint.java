@@ -86,13 +86,32 @@ public class HorseEndpoint {
 
     }
 
-    @GetMapping(value = "/bloodline")
+    @GetMapping(value = "/treehorses")
     @ResponseStatus(HttpStatus.OK)
     public List<TreeHorseDto> getAllTreeHorses() {
-        LOGGER.info("GET all TreeHorses " + BASE_URL + "/bloodline");
+        LOGGER.info("GET all TreeHorses " + BASE_URL + "/treehorses");
         try {
             List<TreeHorseDto> treeHorseDtos = new LinkedList<>();
             List<Horse> horses = horseService.getAllHorses();
+            for (Horse o : horses) {
+                treeHorseDtos.add(horseMapper.entityToTreeDto(o));
+            }
+            return treeHorseDtos;
+        } catch (NotFoundException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Horse not found.", e);
+        } catch (ServiceException e) {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), e);
+        }
+    }
+
+    @GetMapping(value = "/ancestors/{id}/{generations}")
+    @ResponseStatus(HttpStatus.OK)
+    public List<TreeHorseDto> getAllAncestors(@PathVariable("id") Long id,
+                                              @PathVariable("generations") Long generations) {
+        LOGGER.info("GET all ancestors " + BASE_URL + "/ancestors/" + id);
+        try {
+            List<TreeHorseDto> treeHorseDtos = new LinkedList<>();
+            List<Horse> horses = horseService.getAllAncestors(id,generations);
             for (Horse o : horses) {
                 treeHorseDtos.add(horseMapper.entityToTreeDto(o));
             }
