@@ -14,7 +14,6 @@ import {MatInputModule} from '@angular/material/input';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {MatNativeDateModule, MatOptionModule} from '@angular/material/core';
 import {MatDialogModule} from '@angular/material/dialog';
-import { DialogComponent } from './component/dialog/dialog.component';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatSelectModule} from '@angular/material/select';
 
@@ -34,7 +33,6 @@ import { BloodlineComponent } from './component/bloodline/bloodline.component';
     SportComponent,
     HorseMainComponent,
     HorseAddComponent,
-    DialogComponent,
     HorseDetailsComponent,
     HorseEditComponent,
     SportAddComponent,
