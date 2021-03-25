@@ -77,7 +77,7 @@ export class HorseDetailsComponent implements OnInit {
   }
 
   goToDetails(id: number) {
-    this.router.routeReuseStrategy.shouldReuseRoute =(future: ActivatedRouteSnapshot, curr: ActivatedRouteSnapshot)=> {
+    this.router.routeReuseStrategy.shouldReuseRoute = (future: ActivatedRouteSnapshot, curr: ActivatedRouteSnapshot) => {
       console.log(future.url.toString());
       console.log(curr.url.toString());
       if (future.url.toString() === 'view' && curr.url.toString() === future.url.toString()) {
@@ -106,11 +106,44 @@ export class HorseDetailsComponent implements OnInit {
   }
 
   /**
-   * loads a list of all horses from the DB, then filters the horse with the ID specified in URL out
-   * loads a list of all sports from the DB, then filters the sport with the ID specified in horse.favSportId
+   * load the specified horse and its parents from the db
+   * if favSportId is set for horse, the corresponding sport will be fetched from the db
    */
   private getAllFields() {
-    this.horseService.getAllHorses()
+    const id = +this.route.snapshot.paramMap.get('id');
+    console.log(id);
+    this.horseService.getFullHorse(id).subscribe((horses: Horse[]) => {
+      console.log(horses);
+      this.horse = horses.find(x => x.id === id);
+      console.log(this.horse);
+
+      if (this.horse.parent1Id !== null) {
+        this.parent1 = horses.find(x => x.id === this.horse.parent1Id);
+        this.parent1name = this.parent1.name;
+      }
+
+      if (this.horse.parent2Id !== null) {
+        this.parent2 = horses.find(x => x.id === this.horse.parent2Id);
+        this.parent2name = this.parent2.name;
+      }
+
+      console.log(this.horse.favSportId);
+      if (this.horse.favSportId !== null) {
+        this.sportService.getSportById(this.horse.favSportId).subscribe(
+          (sport: Sport) => {
+            console.log(sport);
+            this.sport = sport;
+            this.sportname = sport.name;
+          },
+          error => {
+            this.defaultServiceErrorHandling(error);
+          }
+        );
+      }
+    }, error => {
+      this.defaultServiceErrorHandling(error);
+    });
+    /*this.horseService.getAllHorses()
       .subscribe(horses => {
           console.log('get all horses');
           this.horses = horses;
@@ -142,7 +175,7 @@ export class HorseDetailsComponent implements OnInit {
         }, error => {
           this.defaultServiceErrorHandling(error);
         }
-      );
+      );*/
   }
 
   private getSportById(id: number) {

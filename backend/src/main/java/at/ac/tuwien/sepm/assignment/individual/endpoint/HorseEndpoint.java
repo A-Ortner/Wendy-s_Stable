@@ -129,6 +129,26 @@ public class HorseEndpoint {
         }
     }
 
+    @GetMapping(value = "/fullhorses/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public List<HorseDto> getFullHorse(@PathVariable("id") Long id) {
+        LOGGER.info("GET full horse " + BASE_URL + "/fullhorses/" + id);
+        try {
+            List<HorseDto> horseDtos = new LinkedList<>();
+            List<Horse> horses = horseService.getAllAncestors(id, 2L);
+            for (Horse o : horses) {
+                horseDtos.add(horseMapper.entityToDto(o));
+            }
+            return horseDtos;
+
+        } catch (NotFoundException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Horse not found.", e);
+        } catch (ServiceException e) {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), e);
+        } catch (ValidationException e) {
+            throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, "Error during validating request: " + e.getMessage());
+        }
+    }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)

@@ -204,18 +204,18 @@ public class HorseJdbcDao implements HorseDao {
     public List<Horse> getAllAncestors(Long id, Long generations) throws PersistenceException {
         LOGGER.trace("getAllAncestors({})", id);
 
-        final String sql = "WITH RECURSIVE h(depth, id, name, dateofbirth, parent1id, parent2id) AS (" +
-            "  SELECT 1, id, name, dateofbirth, parent1id, parent2id" +
+        final String sql = "WITH RECURSIVE h(depth, id, name, sex, dateofbirth, description, favSportId, parent1id, parent2id) AS (" +
+            "  SELECT 1, id, name, sex, dateofbirth, description, favSportId, parent1id, parent2id" +
             "  FROM horse" +
             "  WHERE id= ?" +
             "UNION" +
-            "  SELECT  depth+1, h2.id, h2.name, h2.dateofbirth, h2.parent1id, h2.parent2id" +
+            "  SELECT  depth+1, h2.id, h2.name, h2.sex, h2.dateofbirth, h2.description, h2.favSportId, h2.parent1id, h2.parent2id" +
             "  FROM h INNER JOIN horse h2 ON h2.id=h.parent1Id OR h2.id=h.parent2Id" +
             "  where depth< ?" +
             ")" +
-            "SELECT id, name, dateofbirth, parent1id, parent2id FROM h;";
+            "SELECT id, name, sex, dateofbirth, description, favSportId, parent1id, parent2id FROM h;";
 
-        List<Horse> horses = jdbcTemplate.query(sql, this::mapRowTree, id, generations);
+        List<Horse> horses = jdbcTemplate.query(sql, this::mapRow, id, generations);
 
         if (horses.isEmpty()) throw new NotFoundException("Could not find horse with id " + id);
 

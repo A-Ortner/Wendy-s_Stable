@@ -68,7 +68,7 @@ export class HorseService {
   /**
    * queries the DB for horses that match the fields set in searchHorse
    *
-   * @param searchHorse bundled fields that will be used in the query
+   * @param searchTerms bundled fields that will be used in the query
    * @return a list of horses that match the criteria of searchHorse
    */
   searchHorses(searchTerms: SearchTerms): Observable<Horse[]> {
@@ -115,5 +115,10 @@ export class HorseService {
   getBloodline(rootId: number, generations: number): Observable<TreeHorse[]> {
     console.log('Load all ancestors for horse ' + baseUri + '/ancestors/' + rootId);
     return this.httpClient.get<TreeHorse[]>(baseUri + '/ancestors/' + rootId + '/' + generations);
+  }
+
+  getFullHorse(id: number) {
+    console.log('Load one horse and its parents ' + baseUri + '/fullhorses/' + id);
+    return this.httpClient.get<Horse[]>(baseUri + '/fullhorses/' + id);
   }
 }
