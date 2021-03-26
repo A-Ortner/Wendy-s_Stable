@@ -96,7 +96,15 @@ public class Validator {
             if(horse.getDateOfBirth().compareTo(parent1.getDateOfBirth())<0){
                 LOGGER.error("Parent1 is younger than current horse for horse with id " + horse.getId());
                 throw new ValidationException("Parent1 cannot be younger than the current horse.");
+            }
 
+            //horse cannot be its own parent
+            if(horse.getId()!= null){
+                //check if own parent
+                if(horse.getId().equals(parent1.getId())){
+                    LOGGER.error("Current horse with id " + horse.getId() + " cannot be its own parent.");
+                    throw new ValidationException("Horse cannot be its own parent.");
+                }
             }
         }
 
@@ -114,7 +122,15 @@ public class Validator {
             if(horse.getDateOfBirth().compareTo(parent2.getDateOfBirth())<0){
                 LOGGER.error("Parent2 is younger than current horse for horse with id " + horse.getId());
                 throw new ValidationException("Parent2 cannot be younger than the current horse.");
+            }
 
+            //horse cannot be its own parent
+            if(horse.getId()!= null){
+                //check if own parent
+                if(horse.getId().equals(parent2.getId())){
+                    LOGGER.error("Current horse with id " + horse.getId() + " cannot be its own parent.");
+                    throw new ValidationException("Horse cannot be its own parent.");
+                }
             }
         }
 
@@ -132,9 +148,8 @@ public class Validator {
                 LOGGER.error("Parents are of the same sex for horse with id " + horse.getId());
                 throw new ValidationException("Horse´s parents cannot be of the same sex.");
             }
-
-
         }
+
     }
 
     public void validateUpdatedHorse(Horse horse) {
