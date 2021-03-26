@@ -117,7 +117,7 @@ export class HorseService {
     return this.httpClient.get<TreeHorse[]>(baseUri + '/ancestors/' + rootId + '/' + generations);
   }
 
-  getFullHorse(id: number) {
+  getFullHorse(id: number): Observable<Horse[]> {
     console.log('Load one horse and its parents ' + baseUri + '/fullhorses/' + id);
     return this.httpClient.get<Horse[]>(baseUri + '/fullhorses/' + id);
   }

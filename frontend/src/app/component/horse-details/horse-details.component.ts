@@ -1,11 +1,12 @@
 import {Component, OnInit} from '@angular/core';
 import {Horse} from '../../dto/horse';
 import {HorseService} from '../../service/horse.service';
-import {ActivatedRoute, ActivatedRouteSnapshot, Router} from '@angular/router';
+import {ActivatedRoute, ParamMap, Router} from '@angular/router';
 import {Location} from '@angular/common';
 import {Sport} from '../../dto/sport';
 import {SportService} from '../../service/sport.service';
 import {Observable} from 'rxjs';
+import {switchMap} from 'rxjs/operators';
 
 @Component({
   selector: 'app-horse-details',
@@ -17,9 +18,8 @@ export class HorseDetailsComponent implements OnInit {
   error = false;
   errorMessage = '';
 
-  horses: Horse[];
   horse: Horse;
-  horse$: Observable<Horse>;
+  horses$: Observable<Horse[]>;
   parent1: Horse;
   parent1name: string;
   parent2: Horse;
@@ -39,26 +39,11 @@ export class HorseDetailsComponent implements OnInit {
     this.parent1name = 'none';
     this.parent2name = 'none';
 
-    /*this.horse$ = this.route.paramMap.pipe(
+    this.horses$ = this.route.paramMap.pipe(
       switchMap((params: ParamMap) =>
-        this.horseService.getHorseById(params.get('id')))
-    );*/
-
+        this.horseService.getFullHorse(Number(params.get('id'))))
+    );
     this.getAllFields();
-  }
-
-  /**
-   * load the horse with the ID specified in URL
-   */
-  getHorseAndSport(): void {
-    const id = +this.route.snapshot.paramMap.get('id');
-    this.horseService.getHorseById(id)
-      .subscribe(horse => {
-        this.horse = horse;
-        console.log('horse and sport:');
-        console.log(this.horse);//todo: remove
-        this.getSportById(this.horse.favSportId);
-      });
   }
 
   /**
@@ -77,15 +62,7 @@ export class HorseDetailsComponent implements OnInit {
   }
 
   goToDetails(id: number) {
-    this.router.routeReuseStrategy.shouldReuseRoute = (future: ActivatedRouteSnapshot, curr: ActivatedRouteSnapshot) => {
-      console.log(future.url.toString());
-      console.log(curr.url.toString());
-      if (future.url.toString() === 'view' && curr.url.toString() === future.url.toString()) {
-        return false;
-      }
-      return (future.routeConfig === curr.routeConfig);
-    };
-    this.router.navigate(['/details-horse/' + id]);
+    this.router.navigate(['/details-horse/', id]);
   }
 
   /**
@@ -110,15 +87,18 @@ export class HorseDetailsComponent implements OnInit {
    * if favSportId is set for horse, the corresponding sport will be fetched from the db
    */
   private getAllFields() {
-    const id = +this.route.snapshot.paramMap.get('id');
-    console.log(id);
-    this.horseService.getFullHorse(id).subscribe((horses: Horse[]) => {
-      console.log(horses);
+    this.horses$.subscribe(horses => {
+      this.parent1 = null;
+      this.parent1name = 'none';
+      this.parent2 = null;
+      this.parent2name = 'none';
+
+      const id = +this.route.snapshot.paramMap.get('id');
       this.horse = horses.find(x => x.id === id);
       console.log(this.horse);
-
       if (this.horse.parent1Id !== null) {
-        this.parent1 = horses.find(x => x.id === this.horse.parent1Id);
+        console.log(this.horse.parent1Id);
+        this.parent1 = horses.find(x => x.id === Number(this.horse.parent1Id));
         this.parent1name = this.parent1.name;
       }
 
@@ -127,7 +107,6 @@ export class HorseDetailsComponent implements OnInit {
         this.parent2name = this.parent2.name;
       }
 
-      console.log(this.horse.favSportId);
       if (this.horse.favSportId !== null) {
         this.sportService.getSportById(this.horse.favSportId).subscribe(
           (sport: Sport) => {
@@ -140,50 +119,7 @@ export class HorseDetailsComponent implements OnInit {
           }
         );
       }
-    }, error => {
-      this.defaultServiceErrorHandling(error);
     });
-    /*this.horseService.getAllHorses()
-      .subscribe(horses => {
-          console.log('get all horses');
-          this.horses = horses;
-
-          const id = +this.route.snapshot.paramMap.get('id');
-          this.horse = this.horses.filter(h => h.id === id)[0];
-          console.log(this.horse);
-          if (this.horse.parent1Id != null) {
-            this.parent1 = this.horses.filter(p => p.id === this.horse.parent1Id)[0];
-            this.parent1name = this.parent1.name;
-          }
-
-          if (this.horse.parent2Id != null) {
-            this.parent2 = this.horses.filter(p => p.id === this.horse.parent2Id)[0];
-            this.parent2name = this.parent2.name;
-          }
-
-          if (this.horse.favSportId !== null) {
-            this.sportService.getSportById(id).subscribe(
-              (sport: Sport) => {
-                this.sport = sport;
-                this.sportname = sport.name;
-              },
-              error => {
-                this.defaultServiceErrorHandling(error);
-              }
-            );
-          }
-        }, error => {
-          this.defaultServiceErrorHandling(error);
-        }
-      );*/
-  }
-
-  private getSportById(id: number) {
-    this.sportService.getSportById(id).subscribe(
-      (sport: Sport) => {
-        this.sport = sport;
-        console.log(sport); //todo: remove
-      });
   }
 
   private defaultServiceErrorHandling(error: any) {

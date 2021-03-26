@@ -33,10 +33,9 @@
       Parent 1:
     </label>
     <span id="horseParent1" class="form-control"> {{parent1name}}
-      <button *ngIf="parent1" class="align-content-lg-between"> <a
-        routerLink="/details-horse/{{parent1.id}}">
+      <button *ngIf="parent1" class="align-content-lg-between" (click)="goToDetails(parent1.id)">
       DETAILS
-    </a></button>
+    </button>
       </span>
   </div>
 
@@ -45,11 +44,6 @@
       Parent 2:
     </label>
     <span id="horseParent2" class="form-control"> {{parent2name}}
-      <button *ngIf="parent2" class="align-content-lg-between"> <a
-        routerLink="/details-horse/{{parent2.id}}">
-      DETAILS
-    </a></button>
-
       <button *ngIf="parent2" class="align-content-lg-between" (click)="goToDetails(parent2.id)">
       DETAILS
     </button>
