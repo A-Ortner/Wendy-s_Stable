@@ -42,9 +42,11 @@
     class="form-control"
     [(ngModel)]="generations">
 </div>
-<div class="alert alert-danger" *ngIf="gen.touched && (!this.isNumber() || !gen.valid)">Input must be a number.</div>
+<div class="alert alert-danger" *ngIf="gen.touched && (!this.isNumber() || !gen.valid)">Input must be a positive integer.</div>
 <br>
 <button class="btn btn-primary" (click)="loadTree()"> Load Bloodline </button>
 <br><br>
 
 <div id="tree-container" class = "form-group"></div>
+
+
