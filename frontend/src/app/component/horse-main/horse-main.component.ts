@@ -66,7 +66,7 @@ export class HorseMainComponent implements OnInit {
     if (favSportId == null) {
       return '';
     } else {
-      return this.sports.filter(s => s.id = favSportId)[0].name;
+      return this.sports.filter(s => s.id === favSportId)[0].name;
     }
   }
 
@@ -88,7 +88,7 @@ export class HorseMainComponent implements OnInit {
     );
   }
 
-  private getAllHorses() {
+  getAllHorses() {
     this.horseService.getAllHorses().subscribe(
       (horses: Horse[]) => {
         this.horses = horses;
