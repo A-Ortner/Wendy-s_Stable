@@ -3,7 +3,7 @@
 -- negative IDs are used to not interfere with user-entered data and allow clean deletion of test data
 
 
-DELETE FROM sport where ID < 0;
+--DELETE FROM sport where ID < 0;
 INSERT INTO sport (ID, NAME, DESCRIPTION)
 VALUES (-1, 'Polo', NULL)
        , (-2, 'Dressage', NULL)
@@ -17,7 +17,7 @@ VALUES (-1, 'Polo', NULL)
        , (-10, 'Parades', NULL)
       ;
 
-DELETE FROM horse where ID < 11;
+--DELETE FROM horse where ID < 0;
 INSERT INTO horse (id,name,sex,dateofbirth,description,favsportid, parent1id,parent2id)
 VALUES (-1, 'Naruto', 'M', '2020-01-01','likes ramen', -8, null, null)
        ,(-2, 'Hansi', 'M', '2019-01-01',null, -9, null, null)

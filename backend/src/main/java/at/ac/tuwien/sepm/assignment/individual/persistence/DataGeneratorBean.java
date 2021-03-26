@@ -32,6 +32,8 @@ public class DataGeneratorBean {
     @PostConstruct
     void insertDummyData() {
         try(Connection c = source.getConnection()) {
+            ScriptUtils.executeSqlScript(c, new ClassPathResource("sql/dropData.sql"));
+            ScriptUtils.executeSqlScript(c, new ClassPathResource("sql/createSchema.sql"));
             ScriptUtils.executeSqlScript(c, new ClassPathResource("sql/insertData.sql"));
         } catch (Exception e) {
             LOGGER.error("Error inserting test data", e);
