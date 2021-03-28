@@ -45,7 +45,7 @@ public class HorseServiceImpl implements HorseService {
 
     @Override
     public List<Horse> getAllHorses() throws ServiceException {
-        LOGGER.info("getAllHorses()"); //todo: trace
+        LOGGER.trace("getAllHorses()");
         try {
             return horseDao.getAllHorses();
         }catch (PersistenceException e){
@@ -62,7 +62,7 @@ public class HorseServiceImpl implements HorseService {
 
     @Override
     public Horse updateHorse(Horse horse) throws ServiceException, NotFoundException, ValidationException {
-        LOGGER.info("updateHorse({})", horse.toString()); //todo: trace
+        LOGGER.trace("updateHorse({})", horse.toString());
 
         validator.validateUpdatedHorse(horse);
 
@@ -85,13 +85,7 @@ public class HorseServiceImpl implements HorseService {
     @Override
     public void deleteHorse(Long id) throws ServiceException {
 
-        //check if id valid
-        try {
-            horseDao.getOneById(id);
-        }catch (NotFoundException e){
-            LOGGER.error("Delete horse: HorseId is not in the database.");
-            throw new ServiceException("Horse is not in the database. Deletion denied.");
-        }
+        validator.validateId(id);
 
         deleteParentChildRelations(id);
 
@@ -131,7 +125,7 @@ public class HorseServiceImpl implements HorseService {
             }
 
             if(changed){
-                LOGGER.info("Updated parent-child relation for horse with id " + horse.getId()); //todo: trace
+                LOGGER.trace("Updated parent-child relation for horse with id " + horse.getId()); //todo: trace
                 horseDao.updateHorse(horse);
             }
         }

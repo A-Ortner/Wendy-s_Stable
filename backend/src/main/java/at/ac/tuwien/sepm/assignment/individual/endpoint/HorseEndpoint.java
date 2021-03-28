@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.lang.invoke.MethodHandles;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -41,15 +42,17 @@ public class HorseEndpoint {
         try {
             return horseMapper.entityToDto(horseService.getOneById(id));
         } catch (NotFoundException e) {
+            LOGGER.error("NotFoundException " + Arrays.toString(e.getStackTrace()));
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Horse not found.", e);
         } catch (ServiceException e) {
+            LOGGER.error("ServiceException " + Arrays.toString(e.getStackTrace()));
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error during loading horse from database.");
         } catch (ValidationException e) {
+            LOGGER.error("ValidationException " + Arrays.toString(e.getStackTrace()));
             throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, "Error during validating request: " + e.getMessage());
         }
     }
 
-    //todo: make extra dto
     @GetMapping()
     public List<HorseDto> getAllHorses(@RequestParam(required = false, name = "name") String name,
                                        @RequestParam(required = false, name = "sex") String sex,
@@ -69,8 +72,10 @@ public class HorseEndpoint {
                 }
                 return horseDtos;
             } catch (ServiceException e) {
+                LOGGER.error("ServiceException " + Arrays.toString(e.getStackTrace()));
                 throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), e);
             } catch (ValidationException e) {
+                LOGGER.error("ValidationException " + Arrays.toString(e.getStackTrace()));
                 throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, "Error during validating request: " + e.getMessage());
             }
 
@@ -84,6 +89,7 @@ public class HorseEndpoint {
                 }
                 return horseDtos;
             } catch (ServiceException e) {
+                LOGGER.error("ServiceException " + Arrays.toString(e.getStackTrace()));
                 throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), e);
             }
         }
@@ -102,8 +108,10 @@ public class HorseEndpoint {
             }
             return treeHorseDtos;
         } catch (NotFoundException e) {
+            LOGGER.error("NotFoundException " + Arrays.toString(e.getStackTrace()));
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Horse not found.", e);
         } catch (ServiceException e) {
+            LOGGER.error("ServiceException " + Arrays.toString(e.getStackTrace()));
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), e);
         }
     }
@@ -121,10 +129,13 @@ public class HorseEndpoint {
             }
             return treeHorseDtos;
         } catch (NotFoundException e) {
+            LOGGER.error("NotFoundException " + Arrays.toString(e.getStackTrace()));
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Horse not found.", e);
         } catch (ServiceException e) {
+            LOGGER.error("ServiceException " + Arrays.toString(e.getStackTrace()));
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), e);
         } catch (ValidationException e) {
+            LOGGER.error("ValidationException " + Arrays.toString(e.getStackTrace()));
             throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, "Error during validating request: " + e.getMessage());
         }
     }
@@ -142,10 +153,13 @@ public class HorseEndpoint {
             return horseDtos;
 
         } catch (NotFoundException e) {
+            LOGGER.error("NotFoundException " + Arrays.toString(e.getStackTrace()));
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Horse not found.", e);
         } catch (ServiceException e) {
+            LOGGER.error("ServiceException " + Arrays.toString(e.getStackTrace()));
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), e);
         } catch (ValidationException e) {
+            LOGGER.error("ValidationException " + Arrays.toString(e.getStackTrace()));
             throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, "Error during validating request: " + e.getMessage());
         }
     }
@@ -154,15 +168,16 @@ public class HorseEndpoint {
     @ResponseStatus(HttpStatus.CREATED)
     public HorseDto createHorse(@RequestBody HorseDto horseDto) {
         LOGGER.info("Post " + BASE_URL);
-        LOGGER.info(horseDto.toString()); //todo: change to .debug later
         try {
             Horse HorseToBeCreated = horseMapper.dtoToEntity(horseDto);
             return horseMapper.entityToDto(horseService.createHorse(HorseToBeCreated));
         } catch (ValidationException e) {
             //422: The request was well-formed but was unable to be followed due to semantic errors.
+            LOGGER.error("ValidationException " + Arrays.toString(e.getStackTrace()));
             throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, e.getMessage());
         } catch (ServiceException e) {
             //500: internal server error
+            LOGGER.error("ServiceException " + Arrays.toString(e.getStackTrace()));
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), e);
         }
     }
@@ -171,16 +186,17 @@ public class HorseEndpoint {
     @ResponseStatus(HttpStatus.OK)
     public HorseDto updateHorse(@RequestBody HorseDto horse) {
         LOGGER.info("Put " + BASE_URL + "/{}", horse.getId());
-        LOGGER.info(horse.toString()); //todo: remove
 
         try {
             Horse horseEntity = horseMapper.dtoToEntity(horse);
             return horseMapper.entityToDto(horseService.updateHorse(horseEntity));
         } catch (ValidationException e) {
             //422: The request was well-formed but was unable to be followed due to semantic errors.
+            LOGGER.error("ValidationException " + Arrays.toString(e.getStackTrace()));
             throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, e.getMessage());
         } catch (ServiceException e) {
             //500: internal server error
+            LOGGER.error("ServiceException " + Arrays.toString(e.getStackTrace()));
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), e);
         }
     }
@@ -191,8 +207,10 @@ public class HorseEndpoint {
         try {
             this.horseService.deleteHorse(id);
         } catch (ServiceException e) {
+            LOGGER.error("ServiceException " + Arrays.toString(e.getStackTrace()));
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error during deleting horse", e);
         } catch (ValidationException e) {
+            LOGGER.error("ValidationException " + Arrays.toString(e.getStackTrace()));
             throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, "Error during validating request: " + e.getMessage());
         }
     }

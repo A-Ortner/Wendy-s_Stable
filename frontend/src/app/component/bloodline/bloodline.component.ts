@@ -24,7 +24,7 @@ export class BloodlineComponent implements OnInit {
   genNum: number;
   showRoot: boolean;
 
-  private rootHorse: TreeHorse;
+  rootHorse: TreeHorse;
 
 
   constructor(private location: Location,
@@ -78,7 +78,7 @@ export class BloodlineComponent implements OnInit {
    * @param name: name of the horse to be deleted
    */
   deleteHorse(id: number, name: string) {
-    console.log(' delete ' + id);
+    console.log('delete ' + id);
     this.horseService.deleteHorse(id).subscribe(() => {
         alert('Deleted horse ' + name + '.');
         if(this.rid === id){
@@ -106,23 +106,19 @@ export class BloodlineComponent implements OnInit {
     this.router.navigate(['/details-horse/' + id]);
   }
 
-
-  catchDelete(event: number) {
-    console.log('catch delete' + event);
-    const toDelete = this.horses.find(x => x.id === event);
+  /**
+   * re-emits event until it reaches the parent component
+   *
+   * @param id of the horse to be deleted
+   */
+  catchDelete(id: number) {
+    const toDelete = this.horses.find(x => x.id === id);
     console.log(toDelete);
-    this.deleteHorse(event, toDelete.name);
+    this.deleteHorse(id, toDelete.name);
   }
 
   loadTree() {
     console.log('loadTree()');
-    //Reset tree
-    /* const tree = document.getElementById('tree-container');
-     while (tree!== null && tree.firstChild) {
-       tree.removeChild(tree.firstChild);
-     }*/
-
-    //do nothing if fields not set
     if (this.rootId == null || !this.isNumber()) {
       return;
     }

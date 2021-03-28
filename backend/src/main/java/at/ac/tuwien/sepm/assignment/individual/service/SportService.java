@@ -17,8 +17,9 @@ public interface SportService {
      * @return the sport with the specified id.
      * @throws RuntimeException  if something goes wrong during data processing.
      * @throws NotFoundException if the sport could not be found in the system.
+     * @throws ServiceException if something goes wrong during during data processing.
      */
-    Sport getOneById(Long id);
+    Sport getOneById(Long id) throws ServiceException;
 
     /**
      * @return all sports in the database

@@ -78,7 +78,7 @@
       <option *ngFor="let horse of horses" value={{horse.id}}>{{horse.name}} {{horse.sex}} {{horse.dateOfBirth}}</option>
     </select>
   </div>
-<!--  <div class="alert alert-danger" *ngIf="hP1.touched && !parentsValid()">{{parent1Error}}</div>-->
+
 
   <div class="form-group">
     <label for="horseParent2">
@@ -94,7 +94,6 @@
       <option *ngFor="let horse1 of horses" value={{horse1.id}}>{{horse1.name}} {{horse1.sex}} {{horse1.dateOfBirth}}</option>
     </select>
   </div>
-<!--  <div class="alert alert-danger" *ngIf="hP2.touched && !parentsValid()">{{parent2Error}}</div>-->
 
   <div class="form-group">
     <label for="horseDescription">

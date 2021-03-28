@@ -9,6 +9,7 @@ import at.ac.tuwien.sepm.assignment.individual.exception.ValidationException;
 import at.ac.tuwien.sepm.assignment.individual.service.SportService;
 
 import java.lang.invoke.MethodHandles;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -40,8 +41,10 @@ public class SportEndpoint {
         try {
             return sportMapper.entityToDto(sportService.getOneById(id));
         } catch (NotFoundException e) {
+            LOGGER.error("NotFoundException " + Arrays.toString(e.getStackTrace()));
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Sport is not in database", e);
         } catch (ServiceException e){
+            LOGGER.error("ServiceException " + Arrays.toString(e.getStackTrace()));
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error during reading sport", e);
         }
     }
@@ -57,6 +60,7 @@ public class SportEndpoint {
             }
             return sportDtos;
         } catch (ServiceException e) {
+            LOGGER.error("ServiceException " + Arrays.toString(e.getStackTrace()));
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), e);
         }
     }
@@ -65,15 +69,17 @@ public class SportEndpoint {
     @ResponseStatus(HttpStatus.CREATED)
     public SportDto createSport(@RequestBody SportDto sportDto){
         LOGGER.info("Post " + BASE_URL);
-        LOGGER.info(sportDto.toString()); //todo: change to .debug later
+
         try {
             Sport sportToBeCreated = sportMapper.dtoToEntity(sportDto);
             return sportMapper.entityToDto(sportService.createSport(sportToBeCreated));
         }catch(ValidationException e){
             //422: The request was well-formed but was unable to be followed due to semantic errors.
+            LOGGER.error("Validationexception " + Arrays.toString(e.getStackTrace()));
             throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, e.getMessage());
         }catch (ServiceException e){
             //500: internal server error
+            LOGGER.error("ServiceException " + Arrays.toString(e.getStackTrace()));
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), e);
         }
     }

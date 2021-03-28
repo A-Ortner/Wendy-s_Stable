@@ -48,8 +48,6 @@ export class HorseEditComponent implements OnInit {
 
   /**
    * Update an existing horse in the database and navigates back to main
-   *
-   * @param horse contains all set values
    */
   updateHorse() {
     console.log(this.horse);
@@ -74,15 +72,11 @@ export class HorseEditComponent implements OnInit {
 
 
   dateValid() {
-    //check if date set
-    //check if date is not in future
-    //check children: parents cannot be born after children
     if (this.horse.dateOfBirth == null) {
       this.dateError = 'Date of birth must be set.';
       return false;
     }
     return true;
-    //todo: check if in future in backend and for parents and propagate it to this error!
   }
 
   /**
@@ -92,7 +86,6 @@ export class HorseEditComponent implements OnInit {
   private getAllFields() {
     this.horseService.getAllHorses()
       .subscribe(horses => {
-          console.log('get all horses');
           this.horses = horses;
           const id = +this.route.snapshot.paramMap.get('id');
           this.horse = this.horses.filter(h => h.id === id)[0];
@@ -108,7 +101,6 @@ export class HorseEditComponent implements OnInit {
 
           this.sportService.getAllSports().subscribe(
             (sports: Sport[]) => {
-              console.log('get all sports');
               this.sports = sports;
               if(this.horse.favSportId != null) {
                 this.sport = this.sports.filter(s => s.id === this.horse.favSportId)[0];
@@ -138,6 +130,4 @@ export class HorseEditComponent implements OnInit {
       this.errorMessage = error.error.message;
     }
   }
-
-
 }
