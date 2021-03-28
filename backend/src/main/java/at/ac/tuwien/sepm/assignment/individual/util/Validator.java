@@ -30,6 +30,10 @@ public class Validator {
         if((sport.getDescription() !=null)&&(sport.getDescription().length() > 2000 -1)){
             throw new ValidationException("Description is too long.");
         }
+        if(sport.getName().length() > 255){
+            LOGGER.error("Sport´s name is too long: " + sport.getId());
+            throw new ValidationException("name length must not exceed 255 char.");
+        }
     }
 
     public void validateNewHorse(Horse horse) throws ValidationException {
@@ -174,7 +178,7 @@ public class Validator {
             if(!old.getSex().equals(horse.getSex())){
                 List<Horse> horses = horseDao.getAllHorses();
                 for (Horse h : horses) {
-                    if((h.getParent1Id().equals(horse.getId())) || (h.getParent2Id().equals(horse.getId()))){
+                    if((h.getParent1Id() == (horse.getId())) || (h.getParent2Id() == (horse.getId()))){
                         LOGGER.error("Horse´s is already defined as parent and sex cannot be changed.");
                         throw new ValidationException("Horse´s sex cannot be changed if it is already enlisted as parent.");
                     }
