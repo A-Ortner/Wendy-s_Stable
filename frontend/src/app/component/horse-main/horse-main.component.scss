@@ -1,0 +1,20 @@
+#delBtn{
+  background-color: grey;
+  color: white;
+}
+#delBtn:hover{
+  background-color: red;
+
+}
+
+.buttons{
+  display: inline-flex;
+}
+.btn:hover{
+  background-color: aliceblue;
+  color: black;
+}
+
+.btn{
+  margin: 10px;
+}

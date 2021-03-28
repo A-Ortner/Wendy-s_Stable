@@ -64,13 +64,14 @@
     <p id="horseSport" class="form-control">{{this.sportname}}</p>
   </div>
 
-  <button class="btn btn-light btn-outline-secondary">
-    <a routerLink="edit-horse/{{horse.id}}">
-      EDIT
-    </a></button>
-  <br><br>
-  <button class="btn btn-outline-dark" (click)="deleteHorse(horse.id)"> DELETE</button>
-
+  <div class="buttons">
+    <button class="btn btn-light btn-outline-secondary">
+      <a routerLink="edit-horse/{{horse.id}}">
+        EDIT
+      </a></button>
+    <br><br>
+    <button id="delBtn" class="btn btn-outline-dark" (click)="deleteHorse(horse.id)"> DELETE</button>
+  </div>
 </form>
 
 
