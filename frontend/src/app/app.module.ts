@@ -25,6 +25,7 @@ import { HorseDetailsComponent } from './component/horse-details/horse-details.c
 import { HorseEditComponent } from './component/horse-edit/horse-edit.component';
 import { SportAddComponent } from './component/sport-add/sport-add.component';
 import { BloodlineComponent } from './component/bloodline/bloodline.component';
+import { TreeElementComponent } from './component/tree-element/tree-element.component';
 
 @NgModule({
   declarations: [
@@ -37,6 +38,7 @@ import { BloodlineComponent } from './component/bloodline/bloodline.component';
     HorseEditComponent,
     SportAddComponent,
     BloodlineComponent,
+    TreeElementComponent,
   ],
   imports: [
     BrowserModule,
