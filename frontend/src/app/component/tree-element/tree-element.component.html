@@ -1,0 +1,23 @@
+<!--recursive component-->
+<li>
+  <div class="tree-elem">
+    <button style="margin: 5px" type="button" class="btn btn-light btn-outline-secondary" (click)="toggleShow()">
+      +
+    </button>
+    <p><b>{{currentHorse.name}}</b> {{currentHorse.dateOfBirth}}</p>
+    <button style="margin: 5px" type="button" class="btn btn-light btn-outline-secondary">
+      <a routerLink="/details-horse/{{currentHorse.id}}">
+        DETAILS
+      </a>
+    </button>
+    <button id="delBtn" style="margin: 5px" type="button" class="btn btn-outline-secondary" (click)="deleteHorse(currentHorse.id)">
+        DELETE
+    </button>
+  </div>
+
+  <ul *ngIf="showChildElements">
+    <div *ngFor="let parent of parents">
+      <app-tree-element (myEvent)="catchDelete($event)" [currentHorse]="parent" [ancestors]="remainingAncestors"></app-tree-element>
+    </div>
+  </ul>
+</li>
