@@ -177,7 +177,7 @@ public class Validator {
             if(!old.getSex().equals(horse.getSex())){
                 List<Horse> horses = horseDao.getAllHorses();
                 for (Horse h : horses) {
-                    if((h.getParent1Id() == (horse.getId())) || (h.getParent2Id().equals(horse.getId()))){
+                    if((h.getParent1Id() == (horse.getId())) || (h.getParent2Id() == (horse.getId()))){
                         LOGGER.trace("Horse´s is already defined as parent and sex cannot be changed.");
                         throw new ValidationException("Horse´s sex cannot be changed if it is already enlisted as parent.");
                     }
