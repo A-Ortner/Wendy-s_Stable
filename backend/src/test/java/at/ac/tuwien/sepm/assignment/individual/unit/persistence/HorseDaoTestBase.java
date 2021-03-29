@@ -1,5 +1,6 @@
 package at.ac.tuwien.sepm.assignment.individual.unit.persistence;
 
+import at.ac.tuwien.sepm.assignment.individual.base.TestData;
 import at.ac.tuwien.sepm.assignment.individual.entity.Horse;
 import at.ac.tuwien.sepm.assignment.individual.exception.NotFoundException;
 import at.ac.tuwien.sepm.assignment.individual.exception.PersistenceException;
@@ -11,7 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.LocalDate;
 
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 
 public abstract class HorseDaoTestBase {
 
@@ -32,5 +33,14 @@ public abstract class HorseDaoTestBase {
         LocalDate date = LocalDate.now();
         assertThrows(PersistenceException.class,
             () -> horseDao.createHorse(new Horse(name, Sexes.M, date, "ihaha", null)));
+    }
+
+    @Test
+    @DisplayName("Adding new horse with valid fields should throw no Exception")
+    public void addingHorse_valid_shouldThrowNoException() {
+        Horse horse = TestData.getNewMaleHorseWithRequiredFields();
+
+        Horse response =  horseDao.createHorse(horse);
+        assertNotNull(response);
     }
 }
