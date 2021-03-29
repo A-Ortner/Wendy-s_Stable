@@ -31,7 +31,11 @@ public class SportServiceImpl implements SportService {
     @Override
     public Sport getOneById(Long id) {
         LOGGER.trace("getOneById({})", id);
-        return dao.getOneById(id);
+        try {
+            return dao.getOneById(id);
+        }catch (PersistenceException e){
+            throw new ServiceException(e.getMessage(),e);
+        }
     }
 
     @Override

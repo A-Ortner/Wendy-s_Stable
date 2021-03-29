@@ -4,7 +4,6 @@ import at.ac.tuwien.sepm.assignment.individual.entity.Horse;
 import at.ac.tuwien.sepm.assignment.individual.entity.SearchTerms;
 import at.ac.tuwien.sepm.assignment.individual.exception.NotFoundException;
 import at.ac.tuwien.sepm.assignment.individual.exception.PersistenceException;
-import at.ac.tuwien.sepm.assignment.individual.exception.ServiceException;
 
 import java.util.List;
 
@@ -20,19 +19,19 @@ public interface HorseDao {
 
     /**
      * @return all horses in the database
-     * @throws ServiceException if something goes wrong during during data processing.
+     * @throws PersistenceException in case an error occurs in the database
      */
-    List<Horse> getAllHorses();
+    List<Horse> getAllHorses() throws PersistenceException;
 
     /**
      * Get the horse with given ID.
      *
      * @param id of the horse to find.
      * @return the horse with the specified id.
-     * @throws PersistenceException will be thrown if something goes wrong while accessing the persistent data store.
      * @throws NotFoundException   will be thrown if the sport could not be found in the database.
+     * @throws PersistenceException in case an error occurs in the database
      */
-    Horse getOneById(Long id);
+    Horse getOneById(Long id) throws PersistenceException;
 
     /**
      * @param horse which is to be updated in the database

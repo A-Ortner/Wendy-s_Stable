@@ -36,7 +36,6 @@ public class HorseJdbcDao implements HorseDao {
         horse.setId(resultSet.getLong("id"));
         horse.setName(resultSet.getString("name"));
 
-        //todo: check if better to change from enum to string an make enum in frontend
         if (resultSet.getString("sex").equals("M")) horse.setSex(Sexes.M);
         else horse.setSex(Sexes.F);
 
@@ -48,15 +47,6 @@ public class HorseJdbcDao implements HorseDao {
         return horse;
     }
 
-    private Horse mapRowTree(ResultSet resultSet, int i) throws SQLException {
-        final Horse horse = new Horse();
-        horse.setId(resultSet.getLong("id"));
-        horse.setName(resultSet.getString("name"));
-        horse.setDateOfBirth((resultSet.getDate("dateofbirth").toLocalDate()));
-        horse.setParent1Id((Long) resultSet.getObject("parent1id"));
-        horse.setParent2Id((Long) resultSet.getObject("parent2id"));
-        return horse;
-    }
 
     @Override
     public Horse createHorse(Horse horse) throws PersistenceException {
@@ -80,12 +70,11 @@ public class HorseJdbcDao implements HorseDao {
             throw new PersistenceException("Error during saving horse: " + e.getMessage());
         }
         horse.setId(((Number) keyHolder.getKeys().get("id")).longValue());
-        LOGGER.info("Saved horse {}", horse.toString());
         return horse;
     }
 
     @Override
-    public List<Horse> getAllHorses() {
+    public List<Horse> getAllHorses() throws PersistenceException {
         LOGGER.trace("getAllHorses()");
         final String sql = "SELECT * FROM " + TABLE_NAME + ";";
         List<Horse> horses;
@@ -95,9 +84,6 @@ public class HorseJdbcDao implements HorseDao {
             LOGGER.error(e.getMessage());
             throw new PersistenceException("Error during running the query in database: " + e.getMessage());
         }
-        for (Horse h : horses) {
-            LOGGER.info(h.toString());
-        }
         return horses;
     }
 
@@ -105,7 +91,13 @@ public class HorseJdbcDao implements HorseDao {
     public Horse getOneById(Long id) {
         LOGGER.trace("getOneById({})", id);
         final String sql = "SELECT * FROM " + TABLE_NAME + " WHERE id=?";
-        List<Horse> horses = jdbcTemplate.query(sql, this::mapRow, id);
+        List<Horse> horses;
+        try {
+            horses = jdbcTemplate.query(sql, this::mapRow, id);
+        }catch (Exception e){
+            throw new PersistenceException("Error during running the query in database: " + e.getMessage());
+        }
+
 
         if (horses.isEmpty()) throw new NotFoundException("Could not find horse with id " + id);
 
@@ -168,13 +160,9 @@ public class HorseJdbcDao implements HorseDao {
                 if (searchTerms.getFavSportId() != null) pst.setObject(ai.getAndAdd(1), searchTerms.getFavSportId());
 
                 if (searchTerms.getDateOfBirth() != null) pst.setObject(ai.getAndAdd(1), searchTerms.getDateOfBirth());
-                LOGGER.info(pst.toString()); //todo: remove
                 return pst;
             }, this::mapRow);
 
-            for (Horse h : horses) {
-                LOGGER.info(h.toString());
-            }
             return horses;
         } catch (Exception e) {
             e.printStackTrace();

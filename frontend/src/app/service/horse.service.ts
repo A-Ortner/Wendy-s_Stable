@@ -73,24 +73,6 @@ export class HorseService {
    */
   searchHorses(searchTerms: SearchTerms): Observable<Horse[]> {
     console.log(searchTerms);
-    let params = new HttpParams();
-    if (searchTerms.name != null){
-      params = params.set('name', searchTerms.name);
-    }
-    if (searchTerms.sex != null){
-      params = params.set('sex', searchTerms.sex);
-    }
-    if (searchTerms.dateOfBirth != null){
-      params = params.set('dateOfBirth', searchTerms.dateOfBirth);
-    }
-    if (searchTerms.description != null){
-      params = params.set('description', searchTerms.description);
-    }
-    if (searchTerms.favSportId != null){
-      params = params.set('favSportId', searchTerms.favSportId.toString());
-    }
-    console.log(params.toString());
-
     return this.httpClient.get<Horse[]>(baseUri + '/?', {params: <any>searchTerms}); //todo: ask tutor what to use instead of <any>
   }
 

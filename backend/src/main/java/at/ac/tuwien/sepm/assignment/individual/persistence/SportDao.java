@@ -3,7 +3,6 @@ package at.ac.tuwien.sepm.assignment.individual.persistence;
 import at.ac.tuwien.sepm.assignment.individual.entity.Sport;
 import at.ac.tuwien.sepm.assignment.individual.exception.NotFoundException;
 import at.ac.tuwien.sepm.assignment.individual.exception.PersistenceException;
-import at.ac.tuwien.sepm.assignment.individual.exception.ServiceException;
 
 import java.util.List;
 

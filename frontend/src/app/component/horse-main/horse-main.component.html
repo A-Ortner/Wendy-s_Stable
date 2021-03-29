@@ -2,7 +2,8 @@
 <p id="horse-main-headline">Seach for horses or add new ones here!</p>
 
 <!-- Trigger the modal with a button -->
-<button style="margin: 5px" type="button" class="btn btn-light btn-outline-dark btn-lg" data-toggle="modal" data-target="#myModal">Open
+<button style="margin: 5px" type="button" class="btn btn-light btn-outline-dark btn-lg" data-toggle="modal"
+        data-target="#myModal">Open
   search
 </button>
 
@@ -138,15 +139,21 @@
     <td>{{horse.dateOfBirth}}</td>
     <td>{{horse.description}}</td>
     <td>{{this.getSport(horse.favSportId)}}</td>
-    <button style="margin: 5px" type="button" class="btn btn-light btn-outline-secondary"><a routerLink="/details-horse/{{horse.id}}">
-      DETAILS
-    </a></button>
-    <button style="margin: 5px" type="button" class="btn btn-outline-secondary">
-      <a routerLink="/edit-horse/{{horse.id}}">
-        EDIT
-      </a>
-    </button>
-    <button style="margin: 5px" type="button" class="btn btn-outline-secondary" (click)="deleteHorse(horse.id, horse.name)"> DELETE</button>
+
+    <div class="buttons">
+      <button style="margin: 5px" type="button" class="btn btn-light btn-outline-secondary"><a
+        routerLink="/details-horse/{{horse.id}}">
+        DETAILS
+      </a></button>
+      <button style="margin: 5px" type="button" class="btn btn-outline-secondary">
+        <a routerLink="/edit-horse/{{horse.id}}">
+          EDIT
+        </a>
+      </button>
+      <button id="delBtn" style="margin: 5px" type="button" class="btn btn-outline-secondary"
+              (click)="deleteHorse(horse.id, horse.name)"> DELETE
+      </button>
+    </div>
   </tr>
 
 </table>

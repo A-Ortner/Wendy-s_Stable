@@ -33,8 +33,9 @@ public interface HorseService {
      * @return the sport with the specified id.
      * @throws RuntimeException  if something goes wrong during data processing.
      * @throws NotFoundException if the sport could not be found in the system.
+     * @throws ServiceException if something goes wrong during during data processing.
      */
-    Horse getOneById(Long id);
+    Horse getOneById(Long id) throws ServiceException;
 
     /**
      * updates values in db for horse with the specified id

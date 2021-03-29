@@ -15,7 +15,6 @@ export class HorseMainComponent implements OnInit {
   error = false;
   errorMessage = '';
   horses: Horse[];
-  //searchHorse: Horse;
   searchTerms: SearchTerms;
   sports: Sport[];
 
@@ -24,7 +23,6 @@ export class HorseMainComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    //this.searchHorse = new Horse();
     this.searchTerms = new SearchTerms();
     this.getAllHorses();
     this.getAllSports();
@@ -46,7 +44,6 @@ export class HorseMainComponent implements OnInit {
         this.horses = horses;
       },
       error => {
-        //todo: ask if ok
         this.horses = [];
         this.defaultServiceErrorHandling(error);
       }

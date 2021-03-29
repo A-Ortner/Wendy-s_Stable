@@ -32,12 +32,4 @@ public class TreeHorseDto {
     public LocalDate getDateOfBirth() {
         return dateOfBirth;
     }
-
-    public Long getParent1Id() {
-        return parent1Id;
-    }
-
-    public Long getParent2Id() {
-        return parent2Id;
-    }
 }

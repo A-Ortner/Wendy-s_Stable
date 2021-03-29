@@ -45,11 +45,11 @@ public class HorseServiceImpl implements HorseService {
 
     @Override
     public List<Horse> getAllHorses() throws ServiceException {
-        LOGGER.info("getAllHorses()"); //todo: trace
+        LOGGER.trace("getAllHorses()");
         try {
             return horseDao.getAllHorses();
-        } catch (PersistenceException e) {
-            throw new ServiceException(e.getMessage(), e);
+        }catch (PersistenceException e){
+            throw new ServiceException(e.getMessage(),e);
         }
     }
 
@@ -62,7 +62,7 @@ public class HorseServiceImpl implements HorseService {
 
     @Override
     public Horse updateHorse(Horse horse) throws ServiceException, NotFoundException, ValidationException {
-        LOGGER.info("updateHorse({})", horse.toString()); //todo: trace
+        LOGGER.trace("updateHorse({})", horse.toString());
 
         validator.validateUpdatedHorse(horse);
 
@@ -91,12 +91,12 @@ public class HorseServiceImpl implements HorseService {
 
         try {
             this.horseDao.deleteHorse(id);
-        } catch (PersistenceException e) {
+        }catch (PersistenceException e){
             throw new ServiceException(e.getMessage(), e.getCause());
         }
     }
 
-    @Override
+   @Override
     public List<Horse> getAllAncestors(Long id, Long generations) throws ServiceException, NotFoundException, ValidationException {
         LOGGER.trace("getAllAncestors({})", id);
         validator.validateId(id);
@@ -106,26 +106,26 @@ public class HorseServiceImpl implements HorseService {
     private void deleteParentChildRelations(Long id) {
         List<Horse> horses;
         try {
-            horses = horseDao.getAllHorses();
-        } catch (Exception e) {
+           horses = horseDao.getAllHorses();
+        }catch (Exception e){
             LOGGER.error("Delete horse: Children could not be loaded.");
             throw new ServiceException("Could not load children. Deletion denied.");
         }
 
-        for (Horse horse : horses) {
+        for (Horse horse: horses) {
             boolean changed = false;
 
-            if (horse.getParent1Id() == id) {
+            if(horse.getParent1Id() == id){
                 horse.setParent1Id(null);
                 changed = true;
             }
-            if (horse.getParent2Id() == id) {
+            if(horse.getParent2Id() == id){
                 horse.setParent2Id(null);
                 changed = true;
             }
 
-            if (changed) {
-                LOGGER.info("Updated parent-child relation for horse with id " + horse.getId()); //todo: trace
+            if(changed){
+                LOGGER.trace("Updated parent-child relation for horse with id " + horse.getId()); //todo: trace
                 horseDao.updateHorse(horse);
             }
         }

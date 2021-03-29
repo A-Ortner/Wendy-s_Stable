@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import {Sport} from '../../dto/sport';
 import {Location} from '@angular/common';
 import {SportService} from '../../service/sport.service';
-import {Horse} from "../../dto/horse";
 
 @Component({
   selector: 'app-sport-add',

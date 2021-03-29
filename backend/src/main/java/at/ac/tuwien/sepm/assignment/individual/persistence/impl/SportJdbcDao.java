@@ -35,7 +35,13 @@ public class SportJdbcDao implements SportDao {
     public Sport getOneById(Long id) {
         LOGGER.trace("getOneById({})", id);
         final String sql = "SELECT * FROM " + TABLE_NAME + " WHERE id=?";
-        List<Sport> sports = jdbcTemplate.query(sql, this::mapRow, id);
+        List<Sport> sports;
+        try {
+            sports = jdbcTemplate.query(sql, this::mapRow, id);
+        }catch (Exception e){
+            throw new PersistenceException("Error during running the query in database: " + e.getMessage());
+        }
+
 
         if (sports.isEmpty()) throw new NotFoundException("Could not find sport with id " + id);
 
@@ -51,9 +57,6 @@ public class SportJdbcDao implements SportDao {
             sports = jdbcTemplate.query(sql, this::mapRow);
         } catch (Exception e) {
             throw new PersistenceException("Error during running the query in database: " + e.getMessage());
-        }
-        for (Sport s: sports) {
-            LOGGER.info(s.getId() + s.getName() + s.getDescription());
         }
         return sports;
     }
@@ -75,7 +78,6 @@ public class SportJdbcDao implements SportDao {
             throw new PersistenceException("Error during saving horse: " + e.getMessage());
         }
         sport.setId(((Number) keyHolder.getKeys().get("id")).longValue());
-        LOGGER.info("Saved sport {}", sport.toString());
         return sport;
     }
 

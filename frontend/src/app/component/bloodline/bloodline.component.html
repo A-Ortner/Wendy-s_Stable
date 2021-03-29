@@ -22,6 +22,7 @@
     #bl="ngModel"
     class="browser-default custom-select form-control"
     [(ngModel)]="this.rootId">
+    <option *ngIf="!showRoot" selected hidden>none</option>
     <option *ngFor="let horse of horses" value={{horse.id}}>{{horse.name}} {{horse.dateOfBirth}}</option>
   </select>
 </div>
@@ -37,16 +38,22 @@
     id="generations"
     ngModel
     name="gen"
-    #gen = "ngModel"
+    #gen="ngModel"
     type="text"
     class="form-control"
     [(ngModel)]="generations">
 </div>
-<div class="alert alert-danger" *ngIf="gen.touched && (!this.isNumber() || !gen.valid)">Input must be a positive integer.</div>
+<div class="alert alert-danger" *ngIf="gen.touched && (!this.isNumber() || !gen.valid)">Input must be a positive
+  integer.
+</div>
 <br>
-<button class="btn btn-primary" (click)="loadTree()"> Load Bloodline </button>
+<button class="btn btn-primary" (click)="loadTree()"> Load Bloodline</button>
 <br><br>
 
-<div id="tree-container" class = "form-group"></div>
+<ul>
+  <app-tree-element (myEvent)="catchDelete($event)" *ngIf="showRoot" [ancestors]="this.ancestors"
+                    [currentHorse]="this.rootHorse"></app-tree-element>
+</ul>
+
 
 

@@ -144,4 +144,5 @@ public class HorseDto {
     public String toString() {
         return "HorseDTO{ " + this.fieldsString() + " }";
     }
+
 }
