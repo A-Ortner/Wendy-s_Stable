@@ -143,7 +143,7 @@ public class HorseJdbcDao implements HorseDao {
             sql_build += " AND favsportid = ISNULL(?, favsportid)";
         }
         if (searchTerms.getDateOfBirth() != null) {
-            sql_build += " AND dateOfBirth >= ISNULL(?, dateOfBirth)";
+            sql_build += " AND dateOfBirth <= ISNULL(?, dateOfBirth)";
         }
         sql_build += ";";
 
