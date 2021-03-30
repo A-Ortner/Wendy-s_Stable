@@ -1,7 +1,7 @@
 SEPM Individual Assignment Protocol: 
 Name: Andrea Ortner
 MNr: 11809650
-Time spent: 83h 30min
+Time spent: 84h 7min
 
 04.03.21: 
  12:45 - 18:30 (5h 45min)
@@ -121,3 +121,7 @@ Time spent: 83h 30min
 29.03.21
  18:00 - 18:23 (23min)
  - [TS13], fixing build errors
+
+30.03.21
+ 9:30 - 10:07 (37min)
+ - [US9] bugfix
