@@ -32,4 +32,23 @@ public class TreeHorseDto {
     public LocalDate getDateOfBirth() {
         return dateOfBirth;
     }
+
+    public Long getParent1Id() {
+        return parent1Id;
+    }
+
+    public Long getParent2Id() {
+        return parent2Id;
+    }
+
+    @Override
+    public String toString() {
+        return "TreeHorseDto{" +
+            "id=" + id +
+            ", name='" + name + '\'' +
+            ", dateOfBirth=" + dateOfBirth +
+            ", parent1Id=" + parent1Id +
+            ", parent2Id=" + parent2Id +
+            '}';
+    }
 }

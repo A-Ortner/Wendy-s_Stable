@@ -157,7 +157,6 @@ export class BloodlineComponent implements OnInit {
     this.horseService.getAllTreeHorses().subscribe(
       (horses: Horse[]) => {
         this.horses = horses;
-        console.log(horses);
       },
       error => {
         this.defaultServiceErrorHandling(error);

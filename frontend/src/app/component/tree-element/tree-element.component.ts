@@ -28,7 +28,8 @@ export class TreeElementComponent implements OnInit, OnChanges {
   }
 
   ngOnInit(): void {
-    this.showChildElements = false;
+    console.log('init tree element');
+    this.showChildElements = true;
     this.setParentsAndRemainingAncestors();
   }
 
